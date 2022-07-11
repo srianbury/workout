@@ -11,7 +11,7 @@ export default function Home() {
 
       <main>
         <h1>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to <a href="https://nextjs.org">Next.js</a> starter!
         </h1>
       </main>
     </div>
