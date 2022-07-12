@@ -1,5 +1,5 @@
 import { createContext } from "react";
 
-const NavDrawerContext = createContext({});
+const NavDrawerContext = createContext(false);
 
 export { NavDrawerContext };
