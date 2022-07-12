@@ -1,6 +1,8 @@
 // https://nextjs.org/docs/advanced-features/custom-app
 import NextHead from "next/head";
-import { CssBaseline } from "@mui/material";
+import { Container, CssBaseline } from "@mui/material";
+import { NavDrawerContextProvider, NavDrawer } from "../NavDrawer";
+import { Header } from "../Header";
 
 function App({ Component, pageProps }) {
   return (
@@ -9,7 +11,13 @@ function App({ Component, pageProps }) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </NextHead>
       <CssBaseline />
-      <Component {...pageProps} />
+      <NavDrawerContextProvider>
+        <Header />
+        <NavDrawer />
+        <Container fixed>
+          <Component {...pageProps} />
+        </Container>
+      </NavDrawerContextProvider>
     </>
   );
 }
