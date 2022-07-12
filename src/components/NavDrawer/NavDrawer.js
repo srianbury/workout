@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import { Box, Drawer } from "@mui/material";
+import NextLink from "next/link";
 import { NavDrawerContext } from ".";
+import { DrawerLink } from "./DrawerLink";
 
 function NavDrawer() {
   const { isOpen, closeDrawer } = useContext(NavDrawerContext);
@@ -13,7 +15,8 @@ function NavDrawer() {
         onClick={closeDrawer}
         onKeyDown={closeDrawer}
       >
-        Navigation Drawer
+        <DrawerLink href="/" text="Home" />
+        <DrawerLink href="/about" text="About" />
       </Box>
     </Drawer>
   );

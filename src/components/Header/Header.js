@@ -19,6 +19,8 @@ function Header() {
           aria-label="open drawer"
           onClick={openDrawer}
           edge="start"
+          disableFocusRipple={true}
+          disableRipple={true}
           sx={{ mr: 2 }}
         >
           <MenuIcon fontSize="large" sx={{ mr: 2 }} />
