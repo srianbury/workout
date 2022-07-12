@@ -4,6 +4,7 @@ import { Container, CssBaseline } from "@mui/material";
 import { NavDrawerContextProvider } from "../NavDrawer/NavDrawerContextProvider";
 import { NavDrawer } from "../NavDrawer";
 import { Header } from "../Header";
+import { Footer } from "../Footer";
 
 function App({ Component, pageProps }) {
   return (
@@ -15,9 +16,12 @@ function App({ Component, pageProps }) {
       <NavDrawerContextProvider>
         <Header />
         <NavDrawer />
-        <Container fixed>
-          <Component {...pageProps} />
-        </Container>
+        <div className="content">
+          <Container fixed>
+            <Component {...pageProps} />
+          </Container>
+        </div>
+        <Footer />
       </NavDrawerContextProvider>
     </>
   );
