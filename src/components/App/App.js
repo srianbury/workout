@@ -10,7 +10,13 @@ function App({ Component, pageProps }) {
   return (
     <>
       <NextHead>
+        <title>Workout</title>
+        <meta
+          name="description"
+          content="A community for finding and sharing exercises and workout plans."
+        />
         <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <link rel="icon" href="/favicon.ico" />
       </NextHead>
       <CssBaseline />
       <NavDrawerContextProvider>
