@@ -13,4 +13,29 @@ const mockUsers = [
   },
 ];
 
-export { mockUsers };
+const mockPosts = [
+  {
+    id: 1,
+    shortDescription: "Full body",
+    longDescription: "Full body workout",
+    creatorId: 1,
+  },
+  {
+    id: 2,
+    shortDescription: "At home",
+    longDescription: "Full at home workout",
+    creatorId: 3,
+  },
+];
+
+function getMockUsersDict() {
+  let d = {};
+  mockUsers.forEach((user) => {
+    d[user.id] = user;
+  });
+  return d;
+}
+
+const mockUsersDict = getMockUsersDict();
+
+export { mockUsers, mockPosts, mockUsersDict };
