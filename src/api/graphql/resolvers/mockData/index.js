@@ -1,4 +1,4 @@
-const mockUsers = [
+let mockUsers = [
   {
     id: 1,
     username: "brian",
@@ -13,7 +13,7 @@ const mockUsers = [
   },
 ];
 
-const mockPosts = [
+let mockPosts = [
   {
     id: 1,
     shortDescription: "Full body",
@@ -36,6 +36,6 @@ function getMockUsersDict() {
   return d;
 }
 
-const mockUsersDict = getMockUsersDict();
+let mockUsersDict = getMockUsersDict();
 
 export { mockUsers, mockPosts, mockUsersDict };

@@ -20,6 +20,11 @@ const typeDefs = gql`
     getPosts: [Post!]!
     getPost(id: ID!): Post
   }
+
+  type Mutation {
+    createPost(shortDescription: String!, longDescription: String!): Post
+    deletePost(id: ID!): Boolean!
+  }
 `;
 
 export { typeDefs };
