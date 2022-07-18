@@ -46,4 +46,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ### How I built the GraphQL Server
 
-(robinwieruch.de/graphql-apollo-server-tutorial)[https://www.robinwieruch.de/graphql-apollo-server-tutorial/]
+1. (robinwieruch.de/graphql-apollo-server-tutorial)[https://www.robinwieruch.de/graphql-apollo-server-tutorial/]
+2. https://medium.com/geekculture/graphql-with-mongodb-and-expressjs-26e1b94ab886
