@@ -1,30 +1,20 @@
 import { gql } from "apollo-server-micro";
+import { UserSchema } from "./User";
+import { PostSchema } from "./Post";
 
-const typeDefs = gql`
-  type User {
-    id: ID!
-    username: String!
-    posts: [Post!]!
-  }
-
-  type Post {
-    id: ID!
-    shortDescription: String!
-    longDescription: String!
-    creator: User!
-  }
-
+const linkSchema = gql`
   type Query {
-    getUsers: [User!]!
-    getUserByUsername(username: String!): User
-    getPosts: [Post!]!
-    getPost(id: ID!): Post
+    _: Boolean
   }
 
   type Mutation {
-    createPost(shortDescription: String!, longDescription: String!): Post
-    deletePost(id: ID!): Boolean!
+    _: Boolean
+  }
+
+  type Subscription {
+    _: Boolean
   }
 `;
 
-export { typeDefs };
+const schema = [linkSchema, UserSchema, PostSchema];
+export { schema };

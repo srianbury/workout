@@ -1,8 +1,7 @@
-import { mockPosts } from "../mockData";
-
 async function getPost(parent, args, context, info) {
+  const { models } = context;
   const { id } = args;
-  const post = mockPosts.find((post) => post.id == id); // loose equals here for string or int IDs
+  const post = models.mockPosts.find((post) => post.id == id); // loose equals here for string or int IDs
   if (post) {
     return post;
   }

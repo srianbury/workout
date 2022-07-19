@@ -1,7 +1,6 @@
-import { mockPosts } from "../mockData";
-
 async function getPosts(parent, args, context, info) {
-  return mockPosts;
+  const { models } = context;
+  return models.mockPosts;
 }
 
 export { getPosts };

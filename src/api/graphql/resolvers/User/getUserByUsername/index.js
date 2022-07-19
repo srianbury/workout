@@ -1,8 +1,7 @@
-import { mockUsers } from "../mockData";
-
 async function getUserByUsername(parent, args, context, info) {
+  const { models } = context;
   const { username } = args;
-  const user = mockUsers.find((user) => user.username === username);
+  const user = models.mockUsers.find((user) => user.username === username);
   if (user) {
     return user;
   }

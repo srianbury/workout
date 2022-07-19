@@ -1,7 +1,8 @@
 import { ApolloServer } from "apollo-server-micro";
 import Cors from "micro-cors";
-import { typeDefs } from "./schemas";
+import { schema } from "./schemas";
 import { resolvers } from "./resolvers";
+import * as models from "./models";
 
 const config = {
   api: {
@@ -10,7 +11,13 @@ const config = {
 };
 
 const cors = Cors();
-const apolloServer = new ApolloServer({ typeDefs, resolvers });
+const apolloServer = new ApolloServer({
+  typeDefs: schema,
+  resolvers,
+  context: {
+    models,
+  },
+});
 const start = apolloServer.start();
 
 const startServer = cors(async (req, res) => {

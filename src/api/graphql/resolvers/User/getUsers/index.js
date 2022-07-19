@@ -1,7 +1,6 @@
-import { mockUsers } from "../mockData";
-
 async function getUsers(parent, args, context, info) {
-  return mockUsers;
+  const { models } = context;
+  return models.mockUsers;
 }
 
 export { getUsers };
