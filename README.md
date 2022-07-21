@@ -48,3 +48,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 1. (robinwieruch.de/graphql-apollo-server-tutorial)[https://www.robinwieruch.de/graphql-apollo-server-tutorial/]
 2. https://medium.com/geekculture/graphql-with-mongodb-and-expressjs-26e1b94ab886
+3. [Docker for local development with hot-reloading](https://medium.com/bb-tutorials-and-thoughts/react-local-development-with-docker-compose-5a247710f997)
+
+## Docker Setup [source](https://nextjs.org/docs/deployment#docker-image)
+
+1. `docker build -t workout-docker:0.1 .`
+2. `docker run -p 3000:3000 workout-docker:0.1`
