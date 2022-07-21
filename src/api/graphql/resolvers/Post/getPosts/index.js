@@ -1,5 +1,4 @@
-async function getPosts(parent, args, context, info) {
-  const { models } = context;
+async function getPosts(parent, args, { models }, info) {
   return models.mockPosts;
 }
 

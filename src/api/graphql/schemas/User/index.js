@@ -7,7 +7,7 @@ const UserSchema = gql`
   }
 
   type User {
-    id: ID!
+    userId: ID!
     username: String!
     posts: [Post!]!
   }

@@ -14,7 +14,7 @@ const postResolver = {
     deletePost,
   },
   Post: {
-    creator: getPostCreator,
+    user: getPostCreator,
   },
 };
 

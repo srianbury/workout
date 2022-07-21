@@ -3,19 +3,19 @@ import { gql } from "apollo-server-micro";
 const PostSchema = gql`
   extend type Query {
     getPosts: [Post!]!
-    getPost(id: ID!): Post
+    getPost(postId: ID!): Post
   }
 
   extend type Mutation {
     createPost(shortDescription: String!, longDescription: String!): Post
-    deletePost(id: ID!): Boolean!
+    deletePost(postId: ID!): Boolean!
   }
 
   type Post {
-    id: ID!
+    postId: ID!
     shortDescription: String!
     longDescription: String!
-    creator: User!
+    user: User!
   }
 `;
 

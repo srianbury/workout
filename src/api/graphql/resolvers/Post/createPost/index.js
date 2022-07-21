@@ -5,10 +5,10 @@ async function createPost(
   info
 ) {
   const post = {
-    id: models.mockPosts.length + 1,
+    postId: models.mockPosts.length + 1,
     shortDescription,
     longDescription,
-    creatorId: 1,
+    userId: 1,
   };
   models.mockPosts.push(post);
   return post;

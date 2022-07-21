@@ -1,5 +1,4 @@
-async function getUsers(parent, args, context, info) {
-  const { models } = context;
+async function getUsers(parent, args, { models }, info) {
   return models.mockUsers;
 }
 
