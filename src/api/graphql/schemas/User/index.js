@@ -1,6 +1,6 @@
 import { gql } from "apollo-server-micro";
 
-const UserSchema = gql`
+const userSchema = gql`
   extend type Query {
     getUsers: [User!]!
     getUserByUsername(username: String!): User
@@ -13,4 +13,4 @@ const UserSchema = gql`
   }
 `;
 
-export { UserSchema };
+export { userSchema };

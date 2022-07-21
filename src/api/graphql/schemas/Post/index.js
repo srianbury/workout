@@ -1,6 +1,6 @@
 import { gql } from "apollo-server-micro";
 
-const PostSchema = gql`
+const postSchema = gql`
   extend type Query {
     getPosts: [Post!]!
     getPost(postId: ID!): Post
@@ -19,4 +19,4 @@ const PostSchema = gql`
   }
 `;
 
-export { PostSchema };
+export { postSchema };
