@@ -11,8 +11,8 @@ let mockUsers = [
   },
   {
     userId: 3,
-    email: "bob@mail.com",
-    username: "bob",
+    email: "alfredo@mail.com",
+    username: "alfredo",
   },
 ];
 
@@ -22,7 +22,7 @@ let mockPosts = [
     title:
       "Chris Hemsworth's Workout Explained By His Personal Trainer | Train Like a Celebrity | Men's Health",
     shortDescription: "Full body",
-    longDescription: "Full body workout",
+    longDescription: "Describe the workout here",
     createdTs: new Date("2022-01-01"),
     videoUrlId: "Kuv0xThzxrU",
     userId: 1,
@@ -32,18 +32,19 @@ let mockPosts = [
     title:
       "Manny Jacinto's Functional Workout For Total Body Strength | Train Like | Men's Health",
     shortDescription: "At home",
-    longDescription: "Full at home workout",
+    longDescription: "Describe the workout here",
     createdTs: new Date("2022-03-01"),
     videoUrlId: "GepY4bgjGNA",
     userId: 3,
   },
   {
-    postId: 2,
+    postId: 3,
     title: "This workout does not have a video",
-    shortDescription: "At home",
-    longDescription: "Full at home workout",
+    shortDescription:
+      "Luke Zocchi, Chris Hemsworth's personal trainer, takes us to Hemsworth's home in Byron Bay Australia, where he puts Hemsworth's stunt double through the workout he designed for Hemsworth for the new Men In Black Movie. ",
+    longDescription: "Describe the workout here",
     createdTs: new Date("2022-05-24"),
-    userId: 1,
+    userId: 2,
   },
 ];
 
