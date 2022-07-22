@@ -3,6 +3,8 @@ import { userSchema } from "./User";
 import { postSchema } from "./Post";
 
 const linkSchema = gql`
+  scalar DateTime
+
   type Query {
     _: Boolean
   }
