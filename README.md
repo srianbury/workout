@@ -49,6 +49,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 1. (robinwieruch.de/graphql-apollo-server-tutorial)[https://www.robinwieruch.de/graphql-apollo-server-tutorial/]
 2. https://medium.com/geekculture/graphql-with-mongodb-and-expressjs-26e1b94ab886
 3. [Docker for local development with hot-reloading](https://medium.com/bb-tutorials-and-thoughts/react-local-development-with-docker-compose-5a247710f997)
+4. [AWS CoPilot for Amazon ECS](https://aws.github.io/copilot-cli/docs/getting-started/first-app-tutorial/)
 
 ## Docker Setup [source](https://nextjs.org/docs/deployment#docker-image)
 
