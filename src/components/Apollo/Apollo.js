@@ -1,11 +1,13 @@
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
-const client = new ApolloClient({
-  uri: `${process.env.NEXT_PUBLIC_ORIGIN}/api/graphql`,
-  cache: new InMemoryCache(),
-});
-
 function Apollo({ children }) {
+  const client = new ApolloClient({
+    uri:
+      typeof window === "undefined"
+        ? null
+        : `${window.location.origin}/api/graphql`,
+    cache: new InMemoryCache(),
+  });
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 }
 
