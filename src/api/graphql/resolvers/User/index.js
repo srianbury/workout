@@ -1,6 +1,7 @@
 import { getUsers } from "./getUsers";
 import { getUserByUsername } from "./getUserByUsername";
 import { getUsersPosts } from "./getUsersPosts";
+import { getUsersInitials } from "./getUsersInitials";
 
 const userResolver = {
   Query: {
@@ -9,6 +10,7 @@ const userResolver = {
   },
   User: {
     posts: getUsersPosts,
+    initials: getUsersInitials,
   },
 };
 
