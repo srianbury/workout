@@ -1,27 +1,22 @@
 import { Box, Grid, Typography } from "@mui/material";
 
-function PostPreview({}) {
-  const post = {
-    videoUrlId: `Kuv0xThzxrU`,
-    title:
-      "Chris Hemsworth's Workout Explained By His Personal Trainer | Train Like a Celebrity | Men's Health",
-    createdTs: new Date(),
-    user: {
-      username: "brian",
-      initials: "b",
-    },
-  };
+function PostPreview({ post }) {
   return (
     <Box
       sx={{
         mb: 2,
       }}
     >
-      <img
-        src={`https://img.youtube.com/vi/${post.videoUrlId}/sddefault.jpg`}
-        width="100%"
-        height="auto"
-      />
+      {post.videoUrlId ? (
+        <img
+          src={`https://img.youtube.com/vi/${post.videoUrlId}/sddefault.jpg`}
+          style={{
+            width: "100%",
+            height: "auto",
+            margin: "auto",
+          }}
+        />
+      ) : null}
       <Grid container spacing={2}>
         <Grid item xs={2}>
           <img
@@ -42,6 +37,9 @@ function PostPreview({}) {
           >
             {post.title}
           </Typography>
+          {post.videoUrlId ? null : (
+            <Box className="text-5">{post.shortDescription}</Box>
+          )}
           <Box>
             <Box component="span" sx={{ display: "inline" }}>
               <Typography variant="subtitle2" component="span">
@@ -55,7 +53,7 @@ function PostPreview({}) {
             </Box>
             <Box component="span" sx={{ display: "inline" }}>
               <Typography variant="subtitle2" component="span">
-                {post.createdTs.toLocaleDateString()}
+                {new Date(post.createdTs).toLocaleDateString()}
               </Typography>
             </Box>
           </Box>

@@ -8,7 +8,9 @@ const userSchema = gql`
 
   type User {
     userId: ID!
-    username: String!
+    email: String!
+    initials: String!
+    username: String
     posts: [Post!]!
   }
 `;

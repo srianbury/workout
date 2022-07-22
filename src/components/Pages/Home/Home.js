@@ -6,9 +6,13 @@ function Home() {
     query {
       getPosts {
         postId
+        title
+        createdTs
         shortDescription
+        videoUrlId
         user {
           username
+          initials
         }
       }
     }

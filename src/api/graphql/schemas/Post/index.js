@@ -7,14 +7,22 @@ const postSchema = gql`
   }
 
   extend type Mutation {
-    createPost(shortDescription: String!, longDescription: String!): Post
+    createPost(
+      title: String!
+      shortDescription: String!
+      longDescription: String!
+      videoUrlId: String
+    ): Post
     deletePost(postId: ID!): Boolean!
   }
 
   type Post {
     postId: ID!
+    title: String!
     shortDescription: String!
     longDescription: String!
+    createdTs: DateTime!
+    videoUrlId: String
     user: User!
   }
 `;
