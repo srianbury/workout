@@ -46,8 +46,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ### How I built the GraphQL Server
 
-1. (robinwieruch.de/graphql-apollo-server-tutorial)[https://www.robinwieruch.de/graphql-apollo-server-tutorial/]
-2. https://medium.com/geekculture/graphql-with-mongodb-and-expressjs-26e1b94ab886
+1. [robinwieruch.de/graphql-apollo-server-tutorial](https://www.robinwieruch.de/graphql-apollo-server-tutorial/)
+2. [GraphQL with MongoDB](https://medium.com/geekculture/graphql-with-mongodb-and-expressjs-26e1b94ab886)
 3. [Docker for local development with hot-reloading](https://medium.com/bb-tutorials-and-thoughts/react-local-development-with-docker-compose-5a247710f997)
 4. [AWS CoPilot for Amazon ECS](https://aws.github.io/copilot-cli/docs/getting-started/first-app-tutorial/)
 
@@ -55,3 +55,21 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 1. `docker build -t workout-docker:0.1 .`
 2. `docker run -p 3000:3000 workout-docker:0.1`
+
+## Functional Requirements (MVP)
+
+1. Post workouts
+1. Follow other users
+1. Mark workouts as favorites
+1. Display some sort of timeline
+1. Workouts only contain text
+1. Search for a workout and or user
+
+## Extended requirements
+
+1. Workout posts can contain photos
+1. Tags maybe?
+1. Comments on a workout?
+1. Trending workouts?
+1. Tag users?
+1. Follow/workout suggestions
