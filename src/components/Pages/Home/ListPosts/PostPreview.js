@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Box, Grid, Typography } from "@mui/material";
 
 function PostPreview({ post }) {
@@ -29,14 +30,22 @@ function PostPreview({ post }) {
           />
         </Grid>
         <Grid item xs={10}>
-          <Typography
-            variant="subtitle2"
-            component="div"
-            className="text-2"
-            sx={{ fontWeight: "bold" }}
-          >
-            {post.title}
-          </Typography>
+          <Link href={`/p/${post.postId}/`}>
+            <Typography
+              variant="subtitle2"
+              component="div"
+              className="text-2"
+              sx={{
+                fontWeight: "bold",
+                "&:hover": {
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                },
+              }}
+            >
+              {post.title}
+            </Typography>
+          </Link>
           {post.videoUrlId ? null : (
             <Box className="text-5">{post.shortDescription}</Box>
           )}
