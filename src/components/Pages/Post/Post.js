@@ -9,12 +9,16 @@ function Post() {
     return (
       <div>
         <main>
-          <div>Loading...</div>
+          <div>No post found.</div>
         </main>
       </div>
     );
   }
 
+  return <PostContainter postId={postId} />;
+}
+
+function PostContainter({ postId }) {
   const { loading, error, data } = useQuery(
     gql`
       query Post($postId: ID!) {
@@ -36,6 +40,8 @@ function Post() {
     { variables: { postId } }
   );
 
+  console.log({ error, data });
+
   if (error) {
     return (
       <div>
@@ -51,6 +57,16 @@ function Post() {
       <div>
         <main>
           <div>Loading...</div>
+        </main>
+      </div>
+    );
+  }
+
+  if (!data.getPost) {
+    return (
+      <div>
+        <main>
+          <div>No post found.</div>
         </main>
       </div>
     );
