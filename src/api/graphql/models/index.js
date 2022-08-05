@@ -22,7 +22,8 @@ let mockPosts = [
     title:
       "Chris Hemsworth's Workout Explained By His Personal Trainer | Train Like a Celebrity | Men's Health",
     shortDescription: "Full body",
-    longDescription: "Describe the workout here",
+    longDescription:
+      "Warm Up\n1. Bear Crawl - 20s On, 10s Off (10 Rounds)\n2. Bodyweight Squat - 20s On, 10s Off (10 Rounds)\n\nThe Workout - 8 Weighted Exercises for 8 Reps & 3 Core Exercises - Repeat Circuit 3 Times\n1. Weighted Burpee\n2. Curl & Press\n3. Goblet Squat\n4. Standing Tricep Extension\n5. Reverse Lunge Curl\n6. Lat Raise, Front Raise, Upright Row\n7. Plank Punch Out, Plank Pulse, Plank Pike",
     createdTs: new Date("2022-01-01"),
     videoUrlId: "Kuv0xThzxrU",
     userId: 1,
