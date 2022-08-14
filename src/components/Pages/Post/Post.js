@@ -22,7 +22,7 @@ function PostContainter({ postId }) {
   const { loading, error, data } = useQuery(
     gql`
       query Post($postId: ID!) {
-        getPost(postId: $postId) {
+        getPostByPostId(postId: $postId) {
           postId
           title
           shortDescription
@@ -39,8 +39,6 @@ function PostContainter({ postId }) {
     `,
     { variables: { postId } }
   );
-
-  console.log({ error, data });
 
   if (error) {
     return (
@@ -62,7 +60,7 @@ function PostContainter({ postId }) {
     );
   }
 
-  if (!data.getPost) {
+  if (!data.getPostByPostId) {
     return (
       <div>
         <main>
@@ -72,7 +70,7 @@ function PostContainter({ postId }) {
     );
   }
 
-  return <PostView post={data.getPost} />;
+  return <PostView post={data.getPostByPostId} />;
 }
 
 export { Post };
