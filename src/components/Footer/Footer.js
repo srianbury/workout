@@ -11,6 +11,9 @@ function Footer() {
     >
       <Container fixed>
         <h2>Footer Contents</h2>
+        {process.env.NODE_ENV === "production" ? null : (
+          <div>ENV: {process.env.NODE_ENV}</div>
+        )}
       </Container>
     </Box>
   );
