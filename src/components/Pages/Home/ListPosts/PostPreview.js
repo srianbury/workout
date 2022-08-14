@@ -1,6 +1,8 @@
+import Link from "next/link";
 import { Box, Grid, Typography } from "@mui/material";
+import PropTypes from "prop-types";
 
-function PostPreview({ post }) {
+function PostPreview({ post, variant }) {
   return (
     <Box
       sx={{
@@ -29,14 +31,22 @@ function PostPreview({ post }) {
           />
         </Grid>
         <Grid item xs={10}>
-          <Typography
-            variant="subtitle2"
-            component="div"
-            className="text-2"
-            sx={{ fontWeight: "bold" }}
-          >
-            {post.title}
-          </Typography>
+          <Link href={`/p/${post.postId}/`}>
+            <Typography
+              variant="subtitle2"
+              component="div"
+              className="text-2"
+              sx={{
+                fontWeight: "bold",
+                "&:hover": {
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                },
+              }}
+            >
+              {post.title}
+            </Typography>
+          </Link>
           {post.videoUrlId ? null : (
             <Box className="text-5">{post.shortDescription}</Box>
           )}
@@ -62,5 +72,11 @@ function PostPreview({ post }) {
     </Box>
   );
 }
+PostPreview.propTypes = {
+  variant: PropTypes.oneOf(["Home", "User"]),
+};
+PostPreview.defaultProps = {
+  variant: "Home",
+};
 
 export { PostPreview };

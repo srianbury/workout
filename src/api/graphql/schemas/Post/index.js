@@ -3,7 +3,7 @@ import { gql } from "apollo-server-micro";
 const postSchema = gql`
   extend type Query {
     getPosts: [Post!]!
-    getPost(postId: ID!): Post
+    getPostByPostId(postId: ID!): Post
   }
 
   extend type Mutation {

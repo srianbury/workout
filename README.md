@@ -73,3 +73,12 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 1. Trending workouts?
 1. Tag users?
 1. Follow/workout suggestions
+
+## Architecture?
+
+1. Dockerize app
+1. Deploy to aws
+
+## TODO:
+
+1. Continue to build out the design in order to see what features we need to add
