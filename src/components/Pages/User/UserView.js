@@ -18,7 +18,7 @@ function UserView({ user }) {
 function UsersPosts() {
   return (
     <Box>
-      TODO: need a component to show the posts from a user and we're going to
+      TODO: need a component to show the posts from a user and were going to
       re-use the listsposts view from the homepage. Also need a resolver for
       this
     </Box>
