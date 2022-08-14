@@ -1,4 +1,4 @@
-import { Box } from "@mui/icons-material";
+import { Box } from "@mui/material";
 import { useQuery, gql } from "@apollo/client";
 import { ListPosts } from "./ListPosts";
 
