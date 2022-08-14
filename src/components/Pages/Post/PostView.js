@@ -4,7 +4,6 @@ import LiteYouTubeEmbed from "react-lite-youtube-embed";
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 
 function PostView({ post }) {
-  console.log({ post });
   return (
     <div>
       <Head>
@@ -12,7 +11,12 @@ function PostView({ post }) {
       </Head>
       <main>
         <Box sx={{ mb: 1 }}>
-          <LiteYouTubeEmbed id={post.videoUrlId} title="YouTube video player" />
+          {post.videoUrlId ? (
+            <LiteYouTubeEmbed
+              id={post.videoUrlId}
+              title="YouTube video player"
+            />
+          ) : null}
         </Box>
         <Typography
           variant="subtitle2"
@@ -40,28 +44,29 @@ function PostView({ post }) {
                 container
                 direction="row"
                 justifyContent="flex-start"
-                alignItems="flex-start"
+                alignItems="center"
               >
-                <Box sx={{ mr: 1 }}>
-                  <img
-                    src={`https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`}
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      borderRadius: "50%",
-                      maxWidth: "50px",
-                    }}
-                  />
-                </Box>
-                <Box
-                  sx={{
-                    "&:hover": {
-                      cursor: "pointer",
-                      textDecoration: "underline",
-                    },
+                <img
+                  src={`https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`}
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "50%",
+                    maxWidth: "50px",
                   }}
-                >
-                  {post.user.username}
+                />
+                <Box sx={{ ml: 1 }}>
+                  <Box
+                    sx={{
+                      "&:hover": {
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                      },
+                    }}
+                  >
+                    {post.user.username}
+                  </Box>
+                  <Box>0 Followers</Box>
                 </Box>
               </Grid>
             </div>
