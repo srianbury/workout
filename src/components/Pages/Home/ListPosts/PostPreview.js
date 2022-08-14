@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { Box, Grid, Typography } from "@mui/material";
+import PropTypes from "prop-types";
 
-function PostPreview({ post }) {
+function PostPreview({ post, variant }) {
   return (
     <Box
       sx={{
@@ -71,5 +72,11 @@ function PostPreview({ post }) {
     </Box>
   );
 }
+PostPreview.propTypes = {
+  variant: PropTypes.oneOf(["Home", "User"]),
+};
+PostPreview.defaultProps = {
+  variant: "Home",
+};
 
 export { PostPreview };
