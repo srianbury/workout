@@ -1,5 +1,7 @@
 import Head from "next/head";
 import { Box } from "@mui/material";
+import { useQuery, gql } from "@apollo/client";
+import { ListPosts } from "../Home/ListPosts";
 
 function UserView({ user }) {
   return (
@@ -9,20 +11,45 @@ function UserView({ user }) {
       </Head>
       <main>
         <h2>{user.username}</h2>
-        <UsersPosts />
+        {user && user.username ? <UsersPosts username={user.username} /> : null}
       </main>
     </div>
   );
 }
 
-function UsersPosts() {
-  return (
-    <Box>
-      TODO: need a component to show the posts from a user and were going to
-      re-use the listsposts view from the homepage. Also need a resolver for
-      this
-    </Box>
+function UsersPosts({ username }) {
+  const { loading, error, data } = useQuery(
+    gql`
+      query ($username: String!) {
+        getPostsByUsername(username: $username) {
+          postId
+          title
+          createdTs
+          shortDescription
+          videoUrlId
+          user {
+            username
+            initials
+          }
+        }
+      }
+    `,
+    { variables: { username } }
   );
+
+  if (error) {
+    return <Box>An unexpected error occurred.</Box>;
+  }
+
+  if (loading) {
+    return <Box>Loading...</Box>;
+  }
+
+  if (!data.getPostsByUsername || data.getPostsByUsername.length === 0) {
+    return <Box>No posts found.</Box>;
+  }
+
+  return <ListPosts posts={data.getPostsByUsername} variant="User" />;
 }
 
 export { UserView };
