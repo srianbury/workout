@@ -4,6 +4,7 @@ const postSchema = gql`
   extend type Query {
     getPosts: [Post!]!
     getPostByPostId(postId: ID!): Post
+    getPostsByUsername(username: String!): [Post!]
   }
 
   extend type Mutation {

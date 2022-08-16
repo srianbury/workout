@@ -14,6 +14,11 @@ let mockUsers = [
     email: "alfredo@mail.com",
     username: "alfredo",
   },
+  {
+    userId: 4,
+    email: "bilbo@mail.com",
+    username: "bil",
+  },
 ];
 
 let mockPosts = [
