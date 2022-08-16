@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Head from "next/head";
 import { Box, Button, Card, Grid, Typography } from "@mui/material";
 import LiteYouTubeEmbed from "react-lite-youtube-embed";
@@ -46,26 +47,38 @@ function PostView({ post }) {
                 justifyContent="flex-start"
                 alignItems="center"
               >
-                <img
-                  src={`https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`}
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    borderRadius: "50%",
-                    maxWidth: "50px",
-                  }}
-                />
-                <Box sx={{ ml: 1 }}>
+                <Link href={`/u/${post.user.username}/`}>
                   <Box
                     sx={{
                       "&:hover": {
                         cursor: "pointer",
-                        textDecoration: "underline",
                       },
                     }}
                   >
-                    {post.user.username}
+                    <img
+                      src={`https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`}
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: "50%",
+                        maxWidth: "50px",
+                      }}
+                    />
                   </Box>
+                </Link>
+                <Box sx={{ ml: 1 }}>
+                  <Link href={`/u/${post.user.username}/`}>
+                    <Box
+                      sx={{
+                        "&:hover": {
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                        },
+                      }}
+                    >
+                      {post.user.username}
+                    </Box>
+                  </Link>
                   <Box>0 Followers</Box>
                 </Box>
               </Grid>
