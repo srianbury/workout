@@ -1,5 +1,6 @@
 import { useContext } from "react";
-import { Box, Container, IconButton } from "@mui/material";
+import Link from "next/link";
+import { Box, Container, IconButton, Typography, Grid } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { NavDrawerContext } from "../NavDrawer";
 
@@ -14,18 +15,42 @@ function Header() {
       }}
     >
       <Container fixed>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={openDrawer}
-          edge="start"
-          disableFocusRipple={true}
-          disableRipple={true}
-          sx={{ mr: 2 }}
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
         >
-          <MenuIcon fontSize="large" sx={{ mr: 2 }} />
-          <h2>Site Name</h2>
-        </IconButton>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={openDrawer}
+            edge="start"
+            disableFocusRipple={true}
+            disableRipple={true}
+            sx={{ mr: 2, pr: 0, display: "inline" }}
+          >
+            <MenuIcon
+              fontSize="large"
+              sx={{ display: "table-cell", verticalAlign: "middle" }}
+            />
+          </IconButton>
+          <Link href="/">
+            <Typography
+              sx={{
+                display: "inline",
+                fontWeight: "bold",
+                "&:hover": {
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                },
+              }}
+              variant="h5"
+            >
+              Platform
+            </Typography>
+          </Link>
+        </Grid>
       </Container>
     </Box>
   );
