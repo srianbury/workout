@@ -81,4 +81,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## TODO:
 
-1. Continue to build out the design in order to see what features we need to add
+1. Login with Google

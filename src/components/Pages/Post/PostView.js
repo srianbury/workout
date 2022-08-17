@@ -61,7 +61,7 @@ function PostView({ post }) {
                         width: "100%",
                         height: "auto",
                         borderRadius: "50%",
-                        maxWidth: "50px",
+                        maxWidth: "40px",
                       }}
                     />
                   </Box>

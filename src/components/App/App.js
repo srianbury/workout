@@ -2,6 +2,7 @@
 import NextHead from "next/head";
 import { Container, CssBaseline } from "@mui/material";
 import { Apollo } from "../Apollo";
+import { AuthenticatorContextProvider } from "../Authenticator/AuthenticatorContextProvider";
 import { NavDrawerContextProvider } from "../NavDrawer/NavDrawerContextProvider";
 import { NavDrawer } from "../NavDrawer";
 import { Header } from "../Header";
@@ -21,16 +22,18 @@ function App({ Component, pageProps }) {
           <link rel="icon" href="/favicon.ico" />
         </NextHead>
         <CssBaseline />
-        <NavDrawerContextProvider>
-          <Header />
-          <NavDrawer />
-          <div className="content">
-            <Container fixed>
-              <Component {...pageProps} />
-            </Container>
-          </div>
-          <Footer />
-        </NavDrawerContextProvider>
+        <AuthenticatorContextProvider>
+          <NavDrawerContextProvider>
+            <Header />
+            <NavDrawer />
+            <div className="content">
+              <Container fixed>
+                <Component {...pageProps} />
+              </Container>
+            </div>
+            <Footer />
+          </NavDrawerContextProvider>
+        </AuthenticatorContextProvider>
       </Apollo>
     </>
   );

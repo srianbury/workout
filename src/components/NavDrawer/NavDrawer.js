@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { Box, Drawer } from "@mui/material";
-import NextLink from "next/link";
 import { NavDrawerContext } from ".";
 import { DrawerLink } from "./DrawerLink";
 
