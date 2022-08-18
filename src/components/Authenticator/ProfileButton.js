@@ -1,7 +1,10 @@
+import { useContext } from "react";
 import Link from "next/link";
-import { Box } from "@mui/material";
+import { Avatar, Box } from "@mui/material";
+import { AuthenticatorContext } from "../Authenticator";
 
 function ProfileButton() {
+  const { user } = useContext(AuthenticatorContext);
   return (
     <Link href="/profile">
       <Box
@@ -11,14 +14,9 @@ function ProfileButton() {
           },
         }}
       >
-        <img
-          src={`https://avatars.dicebear.com/api/initials/b.svg`}
-          style={{
-            width: "100%",
-            height: "auto",
-            borderRadius: "50%",
-            maxWidth: "40px",
-          }}
+        <Avatar
+          alt="b" // user's initials
+          src={`https://avatars.dicebear.com/api/initials/${user.initials}.svg`}
         />
       </Box>
     </Link>

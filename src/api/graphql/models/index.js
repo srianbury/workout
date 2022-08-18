@@ -3,21 +3,25 @@ let mockUsers = [
     userId: 1,
     email: "brian@mail.com",
     username: "brian",
+    token: "faketoken",
   },
   {
     userId: 2,
     email: "steve@mail.com",
     username: "steve",
+    token: "faketoken",
   },
   {
     userId: 3,
     email: "alfredo@mail.com",
     username: "alfredo",
+    token: "faketoken",
   },
   {
     userId: 4,
     email: "bilbo@mail.com",
     username: "bil",
+    token: "faketoken",
   },
 ];
 

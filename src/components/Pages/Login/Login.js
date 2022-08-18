@@ -2,6 +2,7 @@ import { useContext } from "react";
 import Head from "next/head";
 import { Box, Button } from "@mui/material";
 import { AuthenticatorContext } from "../../Authenticator";
+import { GoogleLoginButton } from "../../GoogleLoginButton";
 
 function Login() {
   return (
@@ -24,9 +25,9 @@ function LoginMain() {
   }
 
   return (
-    <Button variant="outlined" onClick={login}>
-      Login
-    </Button>
+    <Box>
+      <GoogleLoginButton />
+    </Box>
   );
 }
 

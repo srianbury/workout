@@ -2,6 +2,7 @@ import { useContext } from "react";
 import Head from "next/head";
 import { Box, Button } from "@mui/material";
 import { AuthenticatorContext } from "../../Authenticator";
+import { GoogleLoginButton } from "../../GoogleLoginButton";
 
 function Profile() {
   return (
@@ -17,15 +18,13 @@ function Profile() {
 }
 
 function ProfileMain() {
-  const { user, logout, login } = useContext(AuthenticatorContext);
+  const { user, logout } = useContext(AuthenticatorContext);
 
   if (!user) {
     return (
       <Box>
         <Box>You are not logged in.</Box>
-        <Button variant="outlined" onClick={login}>
-          Login
-        </Button>
+        <GoogleLoginButton />
       </Box>
     );
   }

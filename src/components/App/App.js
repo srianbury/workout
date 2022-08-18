@@ -1,5 +1,6 @@
 // https://nextjs.org/docs/advanced-features/custom-app
 import NextHead from "next/head";
+import Script from "next/script";
 import { Container, CssBaseline } from "@mui/material";
 import { Apollo } from "../Apollo";
 import { AuthenticatorContextProvider } from "../Authenticator/AuthenticatorContextProvider";
@@ -20,6 +21,11 @@ function App({ Component, pageProps }) {
           />
           <meta name="viewport" content="initial-scale=1, width=device-width" />
           <link rel="icon" href="/favicon.ico" />
+          <script
+            src="https://accounts.google.com/gsi/client"
+            async
+            defer
+          ></script>
         </NextHead>
         <CssBaseline />
         <AuthenticatorContextProvider>

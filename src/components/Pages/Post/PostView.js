@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Head from "next/head";
-import { Box, Button, Card, Grid, Typography } from "@mui/material";
+import { Avatar, Box, Button, Card, Grid, Typography } from "@mui/material";
 import LiteYouTubeEmbed from "react-lite-youtube-embed";
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 
@@ -55,14 +55,9 @@ function PostView({ post }) {
                       },
                     }}
                   >
-                    <img
+                    <Avatar
+                      alt={post.user.initials}
                       src={`https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`}
-                      style={{
-                        width: "100%",
-                        height: "auto",
-                        borderRadius: "50%",
-                        maxWidth: "40px",
-                      }}
                     />
                   </Box>
                 </Link>
