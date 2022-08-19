@@ -1,3 +1,5 @@
+import { User } from "./User";
+
 let mockUsers = [
   {
     userId: 1,
@@ -68,4 +70,8 @@ function getMockUsersDict() {
 
 let mockUsersDict = getMockUsersDict();
 
-export { mockUsers, mockPosts, mockUsersDict };
+const models = {
+  User,
+};
+
+export { mockUsers, mockPosts, mockUsersDict, models };

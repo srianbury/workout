@@ -23,7 +23,7 @@ function PostPreview({ post, variant }) {
         sx={{
           m: 0,
           p: 0,
-          "-webkit-align-items": "start",
+          WebkitAlignItems: "start",
         }}
         avatar={<ProfilePic post={post} variant={variant} />}
         title={

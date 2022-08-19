@@ -4,7 +4,6 @@ import mongoose from "mongoose";
 import { schema } from "./schemas";
 import { resolvers } from "./resolvers";
 import * as models from "./models";
-
 const config = {
   api: {
     bodyParser: false,

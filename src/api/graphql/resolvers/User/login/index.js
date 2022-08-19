@@ -1,6 +1,9 @@
 import { OAuth2Client } from "google-auth-library";
 
 async function login(parent, { token }, { models }, info) {
+  const user = new models.models.User({ username: "brian" });
+  console.log({ user });
+
   try {
     const client = new OAuth2Client(
       process.env.NEXT_PUBLIC_GOOGLE_OAUTH_CLIENT_ID
