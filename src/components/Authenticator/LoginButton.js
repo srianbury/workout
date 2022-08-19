@@ -3,7 +3,7 @@ import { Button } from "@mui/material";
 
 function LoginButton() {
   return (
-    <Link href="/login" passHref>
+    <Link href="/signin" passHref>
       <Button
         variant="outlined"
         sx={{
@@ -13,7 +13,7 @@ function LoginButton() {
           borderWidth: 1,
         }}
       >
-        Login
+        Sign In
       </Button>
     </Link>
   );

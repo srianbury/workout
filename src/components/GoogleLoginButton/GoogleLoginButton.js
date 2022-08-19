@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { signInWithGoogle } from "../Firebase";
 
 function GoogleLoginButton() {
   useEffect(() => {
@@ -8,7 +9,14 @@ function GoogleLoginButton() {
     });
   }, []);
 
-  return <div id="signInDiv"></div>;
+  return (
+    <div>
+      <div id="signInDiv"></div>
+      <button type="button" onClick={signInWithGoogle}>
+        Sign Up With Google
+      </button>
+    </div>
+  );
 }
 
 export { GoogleLoginButton };

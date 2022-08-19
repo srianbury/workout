@@ -3,3 +3,5 @@ export * from "./About";
 export * from "./Post";
 export { Login } from "./Login";
 export { Profile } from "./Profile";
+export { SignIn } from "./SignIn";
+export { SignUp } from "./SignUp";
