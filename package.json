@@ -16,6 +16,8 @@
     "@mui/material": "^5.8.7",
     "apollo-server-micro": "^3.10.0",
     "firebase": "^9.9.2",
+    "firebase-admin": "^11.0.1",
+    "formik": "^2.2.9",
     "google-auth-library": "^8.2.0",
     "graphql": "^16.5.0",
     "graphql-scalars": "^1.17.0",
@@ -27,7 +29,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-firebase-hooks": "^5.0.3",
-    "react-lite-youtube-embed": "^2.3.1"
+    "react-lite-youtube-embed": "^2.3.1",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "eslint": "8.19.0",

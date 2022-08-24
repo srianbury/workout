@@ -5,6 +5,7 @@ import { AuthenticatorContext } from "../Authenticator";
 
 function ProfileButton() {
   const { user } = useContext(AuthenticatorContext);
+  console.log({ user });
   return (
     <Link href="/profile">
       <Box
@@ -15,9 +16,21 @@ function ProfileButton() {
         }}
       >
         <Avatar
-          alt="b" // user's initials
-          src={`https://avatars.dicebear.com/api/initials/${user.initials}.svg`}
-        />
+          alt={user.initials}
+          src={
+            user.picture ||
+            `https://avatars.dicebear.com/api/initials/${user.initials}.svg`
+          }
+        >
+          <img
+            alt={user.initials}
+            src={
+              user.picture ||
+              `https://avatars.dicebear.com/api/initials/${user.initials}.svg`
+            }
+            referrerPolicy="no-referrer"
+          />
+        </Avatar>
       </Box>
     </Link>
   );

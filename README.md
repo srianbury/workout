@@ -81,4 +81,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## TODO:
 
-1. Login with Google
+1. Login flow:
+
+- after SIGN UP or SIGN IN -> redirect to profile?isUsernameSet={true|false}
+  - set isUsernameSet in DB to true after the first time the username is set

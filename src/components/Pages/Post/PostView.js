@@ -57,8 +57,20 @@ function PostView({ post }) {
                   >
                     <Avatar
                       alt={post.user.initials}
-                      src={`https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`}
-                    />
+                      src={
+                        post.user.picture ||
+                        `https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`
+                      }
+                    >
+                      <img
+                        alt={post.user.initials}
+                        src={
+                          post.user.picture ||
+                          `https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`
+                        }
+                        referrerPolicy="no-referrer"
+                      />
+                    </Avatar>
                   </Box>
                 </Link>
                 <Box sx={{ ml: 1 }}>
@@ -95,7 +107,7 @@ function PostView({ post }) {
         [x] "title": "Chris Hemsworth's Workout Explained By His Personal Trainer | Train Like a Celebrity | Men's Health",
         [x] "shortDescription": "Full body",
         "longDescription": "Describe the workout here",
-        "createdTs": "2022-01-01T00:00:00.000Z",
+        "createdAt": "2022-01-01T00:00:00.000Z",
         "videoUrlId": "Kuv0xThzxrU",
         "user": {
             "__typename": "User",

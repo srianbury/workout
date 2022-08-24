@@ -1,5 +1,6 @@
 export {
-  signInWithGoogle,
   signUpWithGoogle,
+  signUpWithFacebook,
+  signInWithGoogle,
   signInWithFacebook,
 } from "./firebase";

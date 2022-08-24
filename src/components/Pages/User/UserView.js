@@ -24,7 +24,7 @@ function UsersPosts({ username }) {
         getPostsByUsername(username: $username) {
           postId
           title
-          createdTs
+          createdAt
           shortDescription
           videoUrlId
           user {

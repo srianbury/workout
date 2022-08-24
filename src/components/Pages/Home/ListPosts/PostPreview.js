@@ -84,7 +84,7 @@ function PostPreview({ post, variant }) {
               )}
               <Box component="span" sx={{ display: "inline" }}>
                 <Typography variant="subtitle2" component="span">
-                  {new Date(post.createdTs).toLocaleDateString()}
+                  {new Date(post.createdAt).toLocaleDateString()}
                 </Typography>
               </Box>
             </Box>
@@ -125,8 +125,20 @@ function Image({ post }) {
   return (
     <Avatar
       alt={post.user.initials}
-      src={`https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`}
-    />
+      src={
+        post.user.picture ||
+        `https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`
+      }
+    >
+      <img
+        alt={post.user.initials}
+        src={
+          post.user.picture ||
+          `https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`
+        }
+        referrerPolicy="no-referrer"
+      />
+    </Avatar>
   );
 }
 

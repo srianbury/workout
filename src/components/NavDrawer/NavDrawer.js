@@ -16,6 +16,7 @@ function NavDrawer() {
       >
         <DrawerLink href="/" text="Home" />
         <DrawerLink href="/about" text="About" />
+        <DrawerLink href="/create" text="Create Post" />
       </Box>
     </Drawer>
   );

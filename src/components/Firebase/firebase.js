@@ -21,17 +21,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 // const analytics = getAnalytics(app);
 
-// when signin in, ensure an account already exists
-async function signInWithGoogle() {
-  const googleAuthProvider = new GoogleAuthProvider();
-  googleAuthProvider.setCustomParameters({
-    prompt: "select_account",
-  });
-  const response = await signInWithPopup(auth, googleAuthProvider);
-  const { user } = response;
-  console.log({ user });
-}
-
 // when signing up, ensure an account does not already exist
 async function signUpWithGoogle() {
   const googleAuthProvider = new GoogleAuthProvider();
@@ -40,14 +29,40 @@ async function signUpWithGoogle() {
   });
   const response = await signInWithPopup(auth, googleAuthProvider);
   const { user } = response;
-  console.log({ user });
+  return user;
+}
+
+async function signUpWithFacebook() {
+  const facebookAuthProvider = new FacebookAuthProvider();
+  facebookAuthProvider.setCustomParameters({
+    prompt: "select_account",
+  });
+  const response = await signInWithPopup(auth, facebookAuthProvider);
+  const { user } = response;
+  return user;
+}
+
+// when signin in, ensure an account already exists
+async function signInWithGoogle() {
+  const googleAuthProvider = new GoogleAuthProvider();
+  googleAuthProvider.setCustomParameters({
+    prompt: "select_account",
+  });
+  const response = await signInWithPopup(auth, googleAuthProvider);
+  const { user } = response;
+  return user;
 }
 
 async function signInWithFacebook() {
   const facebookAuthProvider = new FacebookAuthProvider();
   const response = await signInWithPopup(auth, facebookAuthProvider);
   const { user } = response;
-  console.log({ user });
+  return user;
 }
 
-export { signInWithGoogle, signUpWithGoogle, signInWithFacebook };
+export {
+  signUpWithGoogle,
+  signUpWithFacebook,
+  signInWithGoogle,
+  signInWithFacebook,
+};

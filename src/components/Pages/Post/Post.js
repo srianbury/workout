@@ -27,7 +27,7 @@ function PostContainter({ postId }) {
           title
           shortDescription
           longDescription
-          createdTs
+          createdAt
           videoUrlId
           user {
             userId

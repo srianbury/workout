@@ -8,7 +8,7 @@ function Home() {
       getPosts {
         postId
         title
-        createdTs
+        createdAt
         shortDescription
         videoUrlId
         user {
