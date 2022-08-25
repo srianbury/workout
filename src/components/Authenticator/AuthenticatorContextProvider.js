@@ -27,11 +27,6 @@ function AuthenticatorContextProvider({ children }) {
     }
   `);
 
-  async function login(response) {
-    const token = response.credential;
-    authenticateToken({ variables: { token } });
-  }
-
   function logout() {
     reset();
   }
@@ -77,7 +72,6 @@ function AuthenticatorContextProvider({ children }) {
             ? data.authenticate.user
             : null,
         authenticationError: null, // TODO replace this with local state where used
-        login,
         logout,
         handleSignUpWithGoogle,
         handleSignUpWithFacebook,

@@ -18,7 +18,7 @@ function Login() {
 }
 
 function LoginMain() {
-  const { user, login } = useContext(AuthenticatorContext);
+  const { user } = useContext(AuthenticatorContext);
 
   if (user) {
     return <Box>You are logged in.</Box>;
