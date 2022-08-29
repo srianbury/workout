@@ -1,7 +1,15 @@
 import { useContext } from "react";
 import Head from "next/head";
 import Link from "next/link";
-import { Box, Stack, TextField, Alert, Button } from "@mui/material";
+import { useRouter } from "next/router";
+import {
+  Box,
+  CircularProgress,
+  Stack,
+  TextField,
+  Alert,
+  Button,
+} from "@mui/material";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useMutation, gql } from "@apollo/client";
@@ -45,23 +53,32 @@ function Create() {
 }
 
 function CreatePost({ user }) {
-  const [createPost, { data, loading, error, reset }] = useMutation(gql`
+  const router = useRouter();
+  const [createPost, { loading, error }] = useMutation(gql`
     mutation (
       $token: String!
       $title: String!
       $shortDescription: String!
       $longDescription: String!
+      $videoSource: String
     ) {
       createPost(
         token: $token
         title: $title
         shortDescription: $shortDescription
         longDescription: $longDescription
+        videoSource: $videoSource
       ) {
         postId
         title
         shortDescription
         longDescription
+        media {
+          video {
+            source
+            id
+          }
+        }
         user {
           userId
           username
@@ -83,7 +100,7 @@ function CreatePost({ user }) {
         .min(1, "Title cannot be blank")
         .trim("Username cannot have leading nor trailing spaces")
         .strict()
-        .required(),
+        .required("Title is required."),
       shortDescription: Yup.string().max(
         500,
         "Short description must be 500 characters or less."
@@ -97,13 +114,11 @@ function CreatePost({ user }) {
         "Video source must be 50 characters or less."
       ),
     }),
-
     onSubmit: handleSubmit,
   });
 
   async function handleSubmit(values, { setSubmitting }) {
     try {
-      console.log("submitting");
       const response = await createPost({
         variables: {
           token: user.token,
@@ -113,9 +128,11 @@ function CreatePost({ user }) {
           videoSource: values.videoSource,
         },
       });
-      console.log({ response });
-      console.log("done");
-      setSubmitting(false);
+      if (response?.data?.createPost?.postId) {
+        router.push(`/p/${response.data.createPost.postId}`);
+      } else {
+        setSubmitting(false);
+      }
     } catch (e) {
       setSubmitting(false);
     }
@@ -188,10 +205,20 @@ function CreatePost({ user }) {
           <Alert severity="error">{formik.errors.videoSource}</Alert>
         ) : null}
         <Box>
-          <Button onClick={formik.handleSubmit} variant="outlined">
+          <Button
+            onClick={formik.handleSubmit}
+            disabled={formik.isSubmitting || loading}
+            variant="outlined"
+          >
+            {formik.isSubmitting || loading ? (
+              <CircularProgress sx={{ mr: 1 }} size={20} />
+            ) : null}
             Post
           </Button>
         </Box>
+        {error ? (
+          <Alert severity="error">An unexpected error occurred.</Alert>
+        ) : null}
       </Stack>
     </Box>
   );

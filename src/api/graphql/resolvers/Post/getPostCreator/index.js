@@ -1,5 +1,5 @@
 async function getPostCreator(post, args, { models }, info) {
-  return models.mockUsersDict[post.userId];
+  return await models.models.User.findOne({ userId: post.userId }).exec();
 }
 
 export { getPostCreator };

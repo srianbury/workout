@@ -10,7 +10,13 @@ function Home() {
         title
         createdAt
         shortDescription
-        videoUrlId
+        media {
+          photo
+          video {
+            source
+            id
+          }
+        }
         user {
           username
           initials
@@ -18,6 +24,8 @@ function Home() {
       }
     }
   `);
+
+  console.log({ data, error });
 
   return (
     <div>

@@ -16,9 +16,9 @@ const postResolver = {
     deletePost,
   },
   Post: {
-    // user: getPostCreator,
+    user: getPostCreator,
     postId: (post) => {
-      return post._id.toString();
+      return post.postId || post._id.toString();
     },
   },
 };

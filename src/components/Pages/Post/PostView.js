@@ -12,12 +12,7 @@ function PostView({ post }) {
       </Head>
       <main>
         <Box sx={{ mb: 1 }}>
-          {post.videoUrlId ? (
-            <LiteYouTubeEmbed
-              id={post.videoUrlId}
-              title="YouTube video player"
-            />
-          ) : null}
+          <PostMedia media={post.media} />
         </Box>
         <Typography
           variant="subtitle2"
@@ -25,10 +20,6 @@ function PostView({ post }) {
           sx={{
             mb: 1,
             fontWeight: "bold",
-            "&:hover": {
-              cursor: "pointer",
-              textDecoration: "underline",
-            },
           }}
         >
           {post.title}
@@ -99,24 +90,27 @@ function PostView({ post }) {
   );
 }
 
-/**
- * {
-    "post": {
-        "__typename": "Post",
-        [x] "postId": "1",
-        [x] "title": "Chris Hemsworth's Workout Explained By His Personal Trainer | Train Like a Celebrity | Men's Health",
-        [x] "shortDescription": "Full body",
-        "longDescription": "Describe the workout here",
-        "createdAt": "2022-01-01T00:00:00.000Z",
-        "videoUrlId": "Kuv0xThzxrU",
-        "user": {
-            "__typename": "User",
-            "userId": "1",
-            "username": "brian",
-            "initials": "b"
-        }
-    }
+function PostMedia({ media }) {
+  if (media?.photo) {
+    return (
+      <img
+        src={media.photo}
+        style={{
+          width: "100%",
+          height: "auto",
+          margin: "auto",
+        }}
+      />
+    );
+  }
+
+  if (media?.video?.source === "YOUTUBE") {
+    return (
+      <LiteYouTubeEmbed id={media.video.id} title="YouTube video player" />
+    );
+  }
+
+  return null;
 }
- */
 
 export { PostView };

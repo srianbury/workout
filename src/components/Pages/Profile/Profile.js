@@ -29,7 +29,7 @@ function Profile() {
 }
 
 function ProfileMain() {
-  const { user, logout } = useContext(AuthenticatorContext);
+  const { user, updateUser, logout } = useContext(AuthenticatorContext);
 
   if (!user) {
     return (
@@ -39,16 +39,16 @@ function ProfileMain() {
     );
   }
 
-  return <UserProfile {...{ user, logout }} />;
+  return <UserProfile {...{ user, logout, updateUser }} />;
 }
 
-function UserProfile({ user, logout }) {
+function UserProfile({ user, logout, updateUser }) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
         <Stack spacing={2}>
           <Box>Hello, {user.username}</Box>
-          <UpdateUserName user={user} />
+          <UpdateUserName user={user} updateUser={updateUser} />
           <Divider />
           <Box>
             <Button variant="outlined" onClick={logout}>
@@ -61,14 +61,19 @@ function UserProfile({ user, logout }) {
   );
 }
 
-function UpdateUserName({ user }) {
+function UpdateUserName({ user, updateUser }) {
   const [updateUserInfo, { data, loading, error, reset }] = useMutation(gql`
     mutation ($token: String!, $userInfo: UserInfo!) {
       updateUserInfo(token: $token, userInfo: $userInfo) {
         success
         message
         user {
+          userId
           username
+          email
+          initials
+          picture
+          token
         }
       }
     }
@@ -82,10 +87,10 @@ function UpdateUserName({ user }) {
     validationSchema: Yup.object({
       username: Yup.string()
         .max(35, "Username must be 35 characters or less.")
-        .min(1, "Username cannot be blank")
-        .trim("Username cannot have leading nor trailing spaces")
+        .min(1, "Username cannot be blank.")
+        .trim("Username cannot have leading nor trailing spaces.")
         .strict()
-        .required(),
+        .required("Username cannot be blank."),
     }),
     // onSubmit: handleSubmit,
     onSubmit: handleSubmit,
@@ -93,7 +98,6 @@ function UpdateUserName({ user }) {
 
   async function handleSubmit(values, { setSubmitting }) {
     try {
-      // TODO: add a method to update the username/info in AuthenticatorContext after a successful update
       const response = await updateUserInfo({
         variables: {
           token: user.token,
@@ -101,6 +105,14 @@ function UpdateUserName({ user }) {
         },
       });
       console.log({ response });
+      if (
+        response &&
+        response.data &&
+        response.data.updateUserInfo &&
+        response.data.updateUserInfo.user
+      ) {
+        updateUser(response.data.updateUserInfo.user);
+      }
       setSubmitting(false);
       setUpdate(false);
     } catch (e) {
@@ -131,8 +143,7 @@ function UpdateUserName({ user }) {
         type="text"
         label="Username"
         variant="outlined"
-        value={formik.values.username}
-        onChange={formik.handleChange}
+        {...formik.getFieldProps("username")}
         fullWidth
         sx={{
           display: "block",

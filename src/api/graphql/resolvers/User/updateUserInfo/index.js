@@ -26,7 +26,10 @@ async function updateUserInfo(
     await user.save();
     return {
       success: true,
-      user,
+      user: {
+        ...user._doc,
+        token,
+      },
     };
   } catch (e) {
     console.log({ e });

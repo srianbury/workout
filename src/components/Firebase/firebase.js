@@ -2,8 +2,10 @@ import { initializeApp } from "firebase/app";
 import {
   getAuth,
   signInWithPopup,
+  createUserWithEmailAndPassword,
   GoogleAuthProvider,
   FacebookAuthProvider,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 // import { getAnalytics } from "firebase/analytics";
 
@@ -21,48 +23,59 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 // const analytics = getAnalytics(app);
 
-// when signing up, ensure an account does not already exist
-async function signUpWithGoogle() {
+function getGoogleAuthProvider() {
   const googleAuthProvider = new GoogleAuthProvider();
   googleAuthProvider.setCustomParameters({
     prompt: "select_account",
   });
-  const response = await signInWithPopup(auth, googleAuthProvider);
-  const { user } = response;
-  return user;
+  return googleAuthProvider;
 }
 
-async function signUpWithFacebook() {
+function getFacebookAuthProvider() {
   const facebookAuthProvider = new FacebookAuthProvider();
-  facebookAuthProvider.setCustomParameters({
-    prompt: "select_account",
-  });
-  const response = await signInWithPopup(auth, facebookAuthProvider);
+  return facebookAuthProvider;
+}
+
+function getSocialProvider(provider) {
+  switch (provider) {
+    case "GOOGLE":
+      return getGoogleAuthProvider();
+    case "FACEBOOK":
+      return getFacebookAuthProvider();
+    default:
+      return null;
+  }
+}
+
+async function signInSignUpWithSocial(provider) {
+  const socialAuthProvider = getSocialProvider(provider);
+  const response = await signInWithPopup(auth, socialAuthProvider);
   const { user } = response;
   return user;
 }
 
-// when signin in, ensure an account already exists
-async function signInWithGoogle() {
-  const googleAuthProvider = new GoogleAuthProvider();
-  googleAuthProvider.setCustomParameters({
-    prompt: "select_account",
-  });
-  const response = await signInWithPopup(auth, googleAuthProvider);
-  const { user } = response;
-  return user;
+async function signInSignUpWithEmailPassword(method, email, password) {
+  try {
+    console.log({ email, password });
+    let response;
+    switch (method) {
+      case "SIGN_UP":
+        response = await createUserWithEmailAndPassword(auth, email, password);
+        break;
+      case "SIGN_IN":
+        response = await signInWithEmailAndPassword(auth, email, password);
+        break;
+    }
+
+    if (!response) {
+      throw Error("Email authentication failed.");
+    }
+
+    const { user } = response;
+    return user;
+  } catch (e) {
+    console.log({ e });
+  }
 }
 
-async function signInWithFacebook() {
-  const facebookAuthProvider = new FacebookAuthProvider();
-  const response = await signInWithPopup(auth, facebookAuthProvider);
-  const { user } = response;
-  return user;
-}
-
-export {
-  signUpWithGoogle,
-  signUpWithFacebook,
-  signInWithGoogle,
-  signInWithFacebook,
-};
+export { signInSignUpWithSocial, signInSignUpWithEmailPassword };

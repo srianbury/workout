@@ -28,7 +28,13 @@ function PostContainter({ postId }) {
           shortDescription
           longDescription
           createdAt
-          videoUrlId
+          media {
+            photo
+            video {
+              source
+              id
+            }
+          }
           user {
             userId
             username

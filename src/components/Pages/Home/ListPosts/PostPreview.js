@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Avatar, Box, CardHeader, Grid, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 
@@ -9,16 +10,7 @@ function PostPreview({ post, variant }) {
         mb: 2,
       }}
     >
-      {post.videoUrlId ? (
-        <img
-          src={`https://img.youtube.com/vi/${post.videoUrlId}/sddefault.jpg`}
-          style={{
-            width: "100%",
-            height: "auto",
-            margin: "auto",
-          }}
-        />
-      ) : null}
+      <PostPreviewThumbnail post={post} />
       <CardHeader
         sx={{
           m: 0,
@@ -44,7 +36,7 @@ function PostPreview({ post, variant }) {
                 {post.title}
               </Typography>
             </Link>
-            {post.videoUrlId ? null : (
+            {post?.media?.photo || post?.media?.video ? null : (
               <Box className="text-5">{post.shortDescription}</Box>
             )}
             <Box>
@@ -100,6 +92,40 @@ PostPreview.propTypes = {
 PostPreview.defaultProps = {
   variant: "Home",
 };
+
+function PostPreviewThumbnail({ post }) {
+  let src = null;
+  if (post?.media?.photo) {
+    src = post.media.photo;
+  } else if (post?.media?.video?.source === "YOUTUBE") {
+    src = `https://img.youtube.com/vi/${post.media.video.id}/sddefault.jpg`;
+  }
+
+  if (!src) {
+    return null;
+  }
+
+  return (
+    <Link href={`/p/${post.postId}/`}>
+      <Box
+        sx={{
+          "&:hover": {
+            cursor: "pointer",
+          },
+        }}
+      >
+        <img
+          src={src}
+          style={{
+            width: "100%",
+            height: "auto",
+            margin: "auto",
+          }}
+        />
+      </Box>
+    </Link>
+  );
+}
 
 function ProfilePic({ post, variant }) {
   if (variant === "User") {

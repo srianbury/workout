@@ -26,7 +26,13 @@ function UsersPosts({ username }) {
           title
           createdAt
           shortDescription
-          videoUrlId
+          media {
+            photo
+            video {
+              source
+              id
+            }
+          }
           user {
             username
             initials

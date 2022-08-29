@@ -2,9 +2,19 @@ import { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
-import { Alert, Box, Button, TextField, Divider, Grid } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Divider,
+  Grid,
+} from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
 import FacebookIcon from "@mui/icons-material/Facebook";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { AuthenticatorContext } from "../../Authenticator";
 
 function SignUp() {
@@ -12,27 +22,66 @@ function SignUp() {
   const router = useRouter();
   const {
     user,
-    authenticationError,
     handleSignUpWithGoogle,
     handleSignUpWithFacebook,
+    handleSignUpWithEmailPassword,
   } = useContext(AuthenticatorContext);
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email("Please provide a valid email.")
+        .required("Email is required."),
+      password: Yup.string()
+        .max(100, "Password must be 100 characters or less.")
+        .min(8, "Password must be at least 8 characters.")
+        .required("Password is required."),
+      confirmPassword: Yup.string().oneOf(
+        [Yup.ref("password"), null],
+        "Passwords must match."
+      ),
+    }),
+    onSubmit: handleEmailPasswordSignUp,
+  });
 
-  async function signUpWithGoogle() {
-    setError(false);
-    const response = await handleSignUpWithGoogle();
-
-    if (response && response.user) {
-      router.push("/profile");
-    }
-
-    if (response && response.authenticationError) {
-      setError(response.authenticationError);
+  function getSignUpHandler(provider) {
+    switch (provider) {
+      case "EMAIL_PASSWORD":
+        return handleSignUpWithEmailPassword;
+      case "GOOGLE":
+        return handleSignUpWithGoogle;
+      case "FACEBOOK":
+        return handleSignUpWithFacebook;
+      default:
+        return null;
     }
   }
 
-  async function signUpWithFacebook() {
+  async function handleEmailPasswordSignUp(values, { setSubmitting }) {
+    try {
+      await handleSignUp("EMAIL_PASSWORD", {
+        email: values.email,
+        password: values.password,
+      });
+    } catch (e) {
+      console.log({ e });
+      setSubmitting(false);
+    }
+  }
+
+  async function handleSignUp(provider, credentials = {}) {
     setError(false);
-    const response = await handleSignUpWithFacebook();
+    const signUpHandler = getSignUpHandler(provider);
+    let response;
+    if (provider === "EMAIL_PASSWORD") {
+      response = await signUpHandler(credentials.email, credentials.password);
+    } else {
+      response = await signUpHandler();
+    }
 
     if (response && response.user) {
       router.push("/profile");
@@ -49,7 +98,9 @@ function SignUp() {
         <title>Workout | Sign Up</title>
       </Head>
       <main>
-        <h1>Sign Up</h1>
+        <Box sx={{ mb: 1 }}>
+          <h1>Sign Up</h1>
+        </Box>
         {user ? (
           <Box>{`Hi ${user.username}, you are logged in.`}</Box>
         ) : (
@@ -57,45 +108,65 @@ function SignUp() {
             <Grid item xs={12} md={6}>
               <Box sx={{ mb: 2 }}>
                 <TextField
-                  id="username"
-                  label="Username"
+                  id="email"
+                  label="Email"
                   variant="outlined"
-                  value=""
                   fullWidth
+                  {...formik.getFieldProps("email")}
                   sx={{
                     display: "block",
                     mb: 2,
                   }}
                 />
+                {formik.touched.email && formik.errors.email ? (
+                  <Alert severity="error" sx={{ mb: 2 }}>
+                    {formik.errors.email}
+                  </Alert>
+                ) : null}
                 <TextField
                   id="password"
                   label="Password"
                   variant="outlined"
                   type="password"
-                  value="sadf"
                   fullWidth
+                  {...formik.getFieldProps("password")}
                   sx={{
                     display: "block",
                     mb: 2,
                   }}
                 />
+                {formik.touched.password && formik.errors.password ? (
+                  <Alert severity="error" sx={{ mb: 2 }}>
+                    {formik.errors.password}
+                  </Alert>
+                ) : null}
                 <TextField
-                  id="verify-password"
-                  label="Verify Password"
+                  id="confirmPassword"
+                  label="Confirm Password"
                   variant="outlined"
                   type="password"
-                  value="sadf"
                   fullWidth
+                  {...formik.getFieldProps("confirmPassword")}
                   sx={{
                     display: "block",
                     mb: 2,
                   }}
                 />
+                {formik.touched.confirmPassword &&
+                formik.errors.confirmPassword ? (
+                  <Alert severity="error" sx={{ mb: 2 }}>
+                    {formik.errors.confirmPassword}
+                  </Alert>
+                ) : null}
                 <Button
                   variant="outlined"
-                  onClick={() => {}}
+                  onClick={formik.handleSubmit}
                   sx={{ width: "100%", py: 1 }}
+                  disabled={formik.isSubmitting}
                 >
+                  {formik.isSubmitting ? (
+                    <CircularProgress sx={{ mr: 1 }} size={20} />
+                  ) : null}
                   Sign Up
                 </Button>
               </Box>
@@ -105,7 +176,7 @@ function SignUp() {
               <Box sx={{ mb: 2, width: "100%" }}>
                 <Button
                   variant="outlined"
-                  onClick={signUpWithGoogle}
+                  onClick={() => handleSignUp("GOOGLE")}
                   sx={{
                     width: "100%",
                     py: 1,
@@ -120,7 +191,7 @@ function SignUp() {
               <Box sx={{ mb: 2, width: "100%" }}>
                 <Button
                   variant="outlined"
-                  onClick={signUpWithFacebook}
+                  onClick={() => handleSignUp("FACEBOOK")}
                   sx={{
                     width: "100%",
                     py: 1,

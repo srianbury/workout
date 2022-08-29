@@ -1,5 +1,5 @@
 async function getPosts(parent, args, { models }, info) {
-  return models.mockPosts;
+  return await models.models.Post.find({});
 }
 
 export { getPosts };

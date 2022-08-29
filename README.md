@@ -81,7 +81,15 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## TODO:
 
-1. Login flow:
+1. Implement username password login
+2. remove the methods using mock data and use data from the database
 
-- after SIGN UP or SIGN IN -> redirect to profile?isUsernameSet={true|false}
-  - set isUsernameSet in DB to true after the first time the username is set
+## MVP:
+
+- Sign In / Sign Up with facebook, google, email/password
+- Create Post
+  - Extract video information from url (only youtube is support currently)
+  - Redirect user to Post when creation is successful
+  - Pull posts from database instead of mock data
+- Load a user's page and show their posts
+- View a Post
