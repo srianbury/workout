@@ -186,6 +186,19 @@ function SignIn() {
                   Sign Up.
                 </Box>
               </Link>
+              <Link href="/reset-password">
+                <Box
+                  sx={{
+                    mt: 1,
+                    "&:hover": {
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    },
+                  }}
+                >
+                  Forgot password?
+                </Box>
+              </Link>
               <AuthenticationError authenticationError={error} />
             </Grid>
           </Grid>

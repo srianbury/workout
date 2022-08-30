@@ -93,3 +93,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
   - Pull posts from database instead of mock data
 - Load a user's page and show their posts
 - View a Post
+
+- Set loading while social authenticating too
+- Implement reset password feature
+- "Like" Button
+
+- send email verification?
+  - https://firebase.google.com/docs/reference/js/v8/firebase.User#sendemailverification

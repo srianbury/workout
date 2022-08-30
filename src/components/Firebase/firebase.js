@@ -6,10 +6,12 @@ import {
   GoogleAuthProvider,
   FacebookAuthProvider,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 // import { getAnalytics } from "firebase/analytics";
 
-const firebaseConfig = {
+// const analytics = getAnalytics(app);
+const app = initializeApp({
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   projectId: process.env.NEXT_PUBLIC_FIREBASE_AUTH_PROJECT_ID,
@@ -17,11 +19,8 @@ const firebaseConfig = {
   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-};
-
-const app = initializeApp(firebaseConfig);
+});
 const auth = getAuth(app);
-// const analytics = getAnalytics(app);
 
 function getGoogleAuthProvider() {
   const googleAuthProvider = new GoogleAuthProvider();
@@ -78,4 +77,14 @@ async function signInSignUpWithEmailPassword(method, email, password) {
   }
 }
 
-export { signInSignUpWithSocial, signInSignUpWithEmailPassword };
+async function handleSendPasswordResetEmail(email) {
+  await sendPasswordResetEmail(auth, email, {
+    url: `${window.location.origin}/signin`,
+  });
+}
+
+export {
+  signInSignUpWithSocial,
+  signInSignUpWithEmailPassword,
+  handleSendPasswordResetEmail,
+};

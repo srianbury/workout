@@ -6,3 +6,4 @@ export { Profile } from "./Profile";
 export { SignIn } from "./SignIn";
 export { SignUp } from "./SignUp";
 export { Create } from "./Create";
+export { ResetPassword } from "./ResetPassword";

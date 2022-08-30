@@ -4,6 +4,7 @@ import { AuthenticatorContext } from "./AuthenticatorContext";
 import {
   signInSignUpWithSocial,
   signInSignUpWithEmailPassword,
+  handleSendPasswordResetEmail,
 } from "../Firebase";
 
 function AuthenticatorContextProvider({ children }) {
@@ -115,6 +116,7 @@ function AuthenticatorContextProvider({ children }) {
         handleSignInWithFacebook,
         handleSignUpWithEmailPassword,
         handleSignInWithEmailPassword,
+        handleSendPasswordResetEmail,
         updateUser,
       }}
     >
