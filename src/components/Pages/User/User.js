@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import { useQuery, gql } from "@apollo/client";
+import { Skeleton } from "@mui/material";
 import { UserView } from "./UserView";
 
 function User() {
@@ -44,7 +45,9 @@ function UserContainer({ username }) {
     return (
       <div>
         <main>
-          <div>Loading...</div>
+          <Skeleton height={100} />
+          <Skeleton />
+          <Skeleton />
         </main>
       </div>
     );

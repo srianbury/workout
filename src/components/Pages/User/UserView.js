@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { Box } from "@mui/material";
 import { useQuery, gql } from "@apollo/client";
-import { ListPosts } from "../Home/ListPosts";
+import { ListPosts, ListPostsSkeleton } from "../Home/ListPosts";
 
 function UserView({ user }) {
   return (
@@ -48,7 +48,7 @@ function UsersPosts({ username }) {
   }
 
   if (loading) {
-    return <Box>Loading...</Box>;
+    return <ListPostsSkeleton />;
   }
 
   if (!data.getPostsByUsername || data.getPostsByUsername.length === 0) {

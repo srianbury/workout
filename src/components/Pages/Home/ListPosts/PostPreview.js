@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Avatar, Box, CardHeader, Grid, Typography } from "@mui/material";
+import { Avatar, Box, CardHeader, Skeleton, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 
 function PostPreview({ post, variant }) {
@@ -168,4 +168,99 @@ function Image({ post }) {
   );
 }
 
-export { PostPreview };
+function PostPreviewSkeleton() {
+  return (
+    <Box
+      sx={{
+        mb: 2,
+      }}
+    >
+      <Skeleton>
+        <img
+          src={"https://img.youtube.com/vi/Kuv0xThzxrU/sddefault.jpg"}
+          style={{
+            width: "100%",
+            height: "auto",
+            margin: "auto",
+          }}
+        />
+      </Skeleton>
+      <CardHeader
+        sx={{
+          m: 0,
+          p: 0,
+          WebkitAlignItems: "start",
+        }}
+        avatar={
+          <Skeleton variant="circular">
+            <Avatar />
+          </Skeleton>
+        }
+        title={
+          <Box>
+            <Skeleton>
+              <Typography
+                variant="subtitle2"
+                component="div"
+                className="text-2"
+                sx={{
+                  fontWeight: "bold",
+                  "&:hover": {
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  },
+                }}
+              >
+                Skeleton Title
+              </Typography>
+            </Skeleton>
+            <Box>
+              <>
+                <Box
+                  component="span"
+                  sx={{
+                    display: "inline",
+                    "&:hover": {
+                      cursor: "pointer",
+                      textDecoration: "underline",
+                    },
+                  }}
+                >
+                  <Skeleton>
+                    <Typography
+                      variant="subtitle2"
+                      component="span"
+                      sx={{
+                        "&:hover": {
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                        },
+                      }}
+                    >
+                      Username
+                    </Typography>
+                  </Skeleton>
+                </Box>
+                <Box component="span" sx={{ display: "inline", mx: 0.5 }}>
+                  <Typography variant="subtitle2" component="span">
+                    •
+                  </Typography>
+                </Box>
+              </>
+
+              <Box component="span" sx={{ display: "inline" }}>
+                <Skeleton>
+                  <Typography variant="subtitle2" component="span">
+                    date
+                  </Typography>
+                </Skeleton>
+              </Box>
+            </Box>
+          </Box>
+        }
+      />
+    </Box>
+  );
+}
+
+export { PostPreview, PostPreviewSkeleton };

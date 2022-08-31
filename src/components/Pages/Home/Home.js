@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { useQuery, gql } from "@apollo/client";
-import { ListPosts } from "./ListPosts";
+import { ListPosts, ListPostsSkeleton } from "./ListPosts";
 
 function Home() {
   const { loading, error, data } = useQuery(gql`
@@ -25,8 +25,6 @@ function Home() {
     }
   `);
 
-  console.log({ data, error });
-
   return (
     <div>
       <main>
@@ -34,7 +32,7 @@ function Home() {
         {error ? (
           <Box>An unexpected error occurred.</Box>
         ) : loading ? (
-          <Box>Loading...</Box>
+          <ListPostsSkeleton />
         ) : (
           <ListPosts posts={data.getPosts} />
         )}
