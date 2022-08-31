@@ -38,7 +38,10 @@ const startServer = cors(async (req, res) => {
 
   await start;
   await mongoose.connect(
-    `mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@cluster0.ev1twvs.mongodb.net/?retryWrites=true&w=majority`
+    `mongodb+srv://${process.env.MONGO_DB_USERNAME}:${process.env.MONGO_DB_PASSWORD}@${process.env.MONGO_DB_HOST}/?retryWrites=true&w=majority`,
+    {
+      dbName: process.env.MONGO_DB_DATABASE_NAME,
+    }
   );
   await apolloServer.createHandler({ path: "/api/graphql" })(req, res);
 });

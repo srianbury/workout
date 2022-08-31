@@ -86,17 +86,9 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## MVP:
 
-- Sign In / Sign Up with facebook, google, email/password
-- Create Post
-  - Extract video information from url (only youtube is support currently)
-  - Redirect user to Post when creation is successful
-  - Pull posts from database instead of mock data
-- Load a user's page and show their posts
-- View a Post
-
+- Create Production Firebase instance
+- Create Production Mongo DB instance
 - Set loading while social authenticating too
-- Implement reset password feature
 - "Like" Button
-
 - send email verification?
   - https://firebase.google.com/docs/reference/js/v8/firebase.User#sendemailverification
