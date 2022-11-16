@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useQuery, gql } from "@apollo/client";
-import { PostView } from "./PostView";
+import { PostView, PostViewSkeleton } from "./PostView";
 
 function Post() {
   const { postId } = useRouter().query;
@@ -27,8 +27,14 @@ function PostContainter({ postId }) {
           title
           shortDescription
           longDescription
-          createdTs
-          videoUrlId
+          createdAt
+          media {
+            photo
+            video {
+              source
+              id
+            }
+          }
           user {
             userId
             username
@@ -51,13 +57,7 @@ function PostContainter({ postId }) {
   }
 
   if (loading) {
-    return (
-      <div>
-        <main>
-          <div>Loading...</div>
-        </main>
-      </div>
-    );
+    return <PostViewSkeleton />;
   }
 
   if (!data.getPostByPostId) {

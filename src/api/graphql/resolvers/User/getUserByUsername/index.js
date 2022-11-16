@@ -1,9 +1,15 @@
 async function getUserByUsername(parent, { username }, { models }, info) {
-  const user = models.mockUsers.find((user) => user.username === username);
-  if (user) {
+  try {
+    const user = await models.models.User.findOne({ username }).exec();
+    console.log({ user });
+    if (!user) {
+      return null;
+    }
     return user;
+  } catch (e) {
+    console.log({ e });
+    return null;
   }
-  return null;
 }
 
 export { getUserByUsername };

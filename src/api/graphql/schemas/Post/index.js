@@ -9,10 +9,11 @@ const postSchema = gql`
 
   extend type Mutation {
     createPost(
+      token: String!
       title: String!
       shortDescription: String!
       longDescription: String!
-      videoUrlId: String
+      videoSource: String
     ): Post
     deletePost(postId: ID!): Boolean!
   }
@@ -22,9 +23,19 @@ const postSchema = gql`
     title: String!
     shortDescription: String!
     longDescription: String!
-    createdTs: DateTime!
-    videoUrlId: String
+    createdAt: DateTime!
+    media: PostMedia
     user: User!
+  }
+
+  type PostMedia {
+    video: PostMediaVideo
+    photo: String
+  }
+
+  type PostMediaVideo {
+    source: String!
+    id: String!
   }
 `;
 

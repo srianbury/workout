@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Box, Grid, Typography } from "@mui/material";
+import { useRouter } from "next/router";
+import { Avatar, Box, CardHeader, Skeleton, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 
 function PostPreview({ post, variant }) {
@@ -9,83 +10,79 @@ function PostPreview({ post, variant }) {
         mb: 2,
       }}
     >
-      {post.videoUrlId ? (
-        <img
-          src={`https://img.youtube.com/vi/${post.videoUrlId}/sddefault.jpg`}
-          style={{
-            width: "100%",
-            height: "auto",
-            margin: "auto",
-          }}
-        />
-      ) : null}
-      <Grid container spacing={2}>
-        <Grid item xs={2}>
-          <ProfilePic post={post} variant={variant} />
-        </Grid>
-        <Grid item xs={10}>
-          <Link href={`/p/${post.postId}/`}>
-            <Typography
-              variant="subtitle2"
-              component="div"
-              className="text-2"
-              sx={{
-                fontWeight: "bold",
-                "&:hover": {
-                  cursor: "pointer",
-                  textDecoration: "underline",
-                },
-              }}
-            >
-              {post.title}
-            </Typography>
-          </Link>
-          {post.videoUrlId ? null : (
-            <Box className="text-5">{post.shortDescription}</Box>
-          )}
+      <PostPreviewThumbnail post={post} />
+      <CardHeader
+        sx={{
+          m: 0,
+          p: 0,
+          WebkitAlignItems: "start",
+        }}
+        avatar={<ProfilePic post={post} variant={variant} />}
+        title={
           <Box>
-            {variant === "User" ? null : (
-              <>
-                <Box
-                  component="span"
-                  sx={{
-                    display: "inline",
-                    "&:hover": {
-                      cursor: "pointer",
-                      textDecoration: "underline",
-                    },
-                  }}
-                >
-                  <Link href={`/u/${post.user.username}/`}>
-                    <Typography
-                      variant="subtitle2"
-                      component="span"
-                      sx={{
-                        "&:hover": {
-                          cursor: "pointer",
-                          textDecoration: "underline",
-                        },
-                      }}
-                    >
-                      {post.user.username}
-                    </Typography>
-                  </Link>
-                </Box>
-                <Box component="span" sx={{ display: "inline", mx: 0.5 }}>
-                  <Typography variant="subtitle2" component="span">
-                    •
-                  </Typography>
-                </Box>
-              </>
-            )}
-            <Box component="span" sx={{ display: "inline" }}>
-              <Typography variant="subtitle2" component="span">
-                {new Date(post.createdTs).toLocaleDateString()}
+            <Link href={`/p/${post.postId}/`}>
+              <Typography
+                variant="subtitle2"
+                component="div"
+                className="text-2"
+                sx={{
+                  fontWeight: "bold",
+                  "&:hover": {
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  },
+                }}
+              >
+                {post.title}
               </Typography>
+            </Link>
+            {post?.media?.photo || post?.media?.video ? null : (
+              <Box className="text-5">{post.shortDescription}</Box>
+            )}
+            <Box>
+              {variant === "User" ? null : (
+                <>
+                  <Box
+                    component="span"
+                    sx={{
+                      display: "inline",
+                      "&:hover": {
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                      },
+                    }}
+                  >
+                    <Link href={`/u/${post.user.username}/`}>
+                      <Typography
+                        variant="subtitle2"
+                        component="span"
+                        sx={{
+                          "&:hover": {
+                            cursor: "pointer",
+                            textDecoration: "underline",
+                          },
+                        }}
+                      >
+                        {post.user.username}
+                      </Typography>
+                    </Link>
+                  </Box>
+                  <Box component="span" sx={{ display: "inline", mx: 0.5 }}>
+                    <Typography variant="subtitle2" component="span">
+                      •
+                    </Typography>
+                  </Box>
+                </>
+              )}
+              <Box component="span" sx={{ display: "inline" }}>
+                <Typography variant="subtitle2" component="span">
+                  {new Date(post.createdAt).toLocaleDateString()}
+                </Typography>
+              </Box>
             </Box>
           </Box>
-        </Grid>
-      </Grid>
+        }
+      />
     </Box>
   );
 }
@@ -95,6 +92,40 @@ PostPreview.propTypes = {
 PostPreview.defaultProps = {
   variant: "Home",
 };
+
+function PostPreviewThumbnail({ post }) {
+  let src = null;
+  if (post?.media?.photo) {
+    src = post.media.photo;
+  } else if (post?.media?.video?.source === "YOUTUBE") {
+    src = `https://img.youtube.com/vi/${post.media.video.id}/sddefault.jpg`;
+  }
+
+  if (!src) {
+    return null;
+  }
+
+  return (
+    <Link href={`/p/${post.postId}/`}>
+      <Box
+        sx={{
+          "&:hover": {
+            cursor: "pointer",
+          },
+        }}
+      >
+        <img
+          src={src}
+          style={{
+            width: "100%",
+            height: "auto",
+            margin: "auto",
+          }}
+        />
+      </Box>
+    </Link>
+  );
+}
 
 function ProfilePic({ post, variant }) {
   if (variant === "User") {
@@ -118,15 +149,118 @@ function ProfilePic({ post, variant }) {
 
 function Image({ post }) {
   return (
-    <img
-      src={`https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`}
-      style={{
-        width: "100%",
-        height: "auto",
-        borderRadius: "50%",
-      }}
-    />
+    <Avatar
+      alt={post.user.initials}
+      src={
+        post.user.picture ||
+        `https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`
+      }
+    >
+      <img
+        alt={post.user.initials}
+        src={
+          post.user.picture ||
+          `https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`
+        }
+        referrerPolicy="no-referrer"
+      />
+    </Avatar>
   );
 }
 
-export { PostPreview };
+function PostPreviewSkeleton() {
+  return (
+    <Box
+      sx={{
+        mb: 2,
+      }}
+    >
+      <Skeleton>
+        <img
+          src={"https://img.youtube.com/vi/Kuv0xThzxrU/sddefault.jpg"}
+          style={{
+            width: "100%",
+            height: "auto",
+            margin: "auto",
+          }}
+        />
+      </Skeleton>
+      <CardHeader
+        sx={{
+          m: 0,
+          p: 0,
+          WebkitAlignItems: "start",
+        }}
+        avatar={
+          <Skeleton variant="circular">
+            <Avatar />
+          </Skeleton>
+        }
+        title={
+          <Box>
+            <Skeleton>
+              <Typography
+                variant="subtitle2"
+                component="div"
+                className="text-2"
+                sx={{
+                  fontWeight: "bold",
+                  "&:hover": {
+                    cursor: "pointer",
+                    textDecoration: "underline",
+                  },
+                }}
+              >
+                Skeleton Title
+              </Typography>
+            </Skeleton>
+            <Box>
+              <>
+                <Box
+                  component="span"
+                  sx={{
+                    display: "inline",
+                    "&:hover": {
+                      cursor: "pointer",
+                      textDecoration: "underline",
+                    },
+                  }}
+                >
+                  <Skeleton>
+                    <Typography
+                      variant="subtitle2"
+                      component="span"
+                      sx={{
+                        "&:hover": {
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                        },
+                      }}
+                    >
+                      Username
+                    </Typography>
+                  </Skeleton>
+                </Box>
+                <Box component="span" sx={{ display: "inline", mx: 0.5 }}>
+                  <Typography variant="subtitle2" component="span">
+                    •
+                  </Typography>
+                </Box>
+              </>
+
+              <Box component="span" sx={{ display: "inline" }}>
+                <Skeleton>
+                  <Typography variant="subtitle2" component="span">
+                    date
+                  </Typography>
+                </Skeleton>
+              </Box>
+            </Box>
+          </Box>
+        }
+      />
+    </Box>
+  );
+}
+
+export { PostPreview, PostPreviewSkeleton };

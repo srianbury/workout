@@ -1,9 +1,10 @@
 async function getPostByPostId(parent, { postId }, { models }, info) {
-  const post = models.mockPosts.find((post) => post.postId == postId); // loose equals here for string or int IDs
-  if (post) {
-    return post;
+  const post = await models.models.Post.findById(postId).exec();
+  console.log({ post });
+  if (!post) {
+    return null;
   }
-  return null;
+  return post;
 }
 
 export { getPostByPostId };

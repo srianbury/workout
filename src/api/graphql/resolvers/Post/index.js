@@ -17,6 +17,9 @@ const postResolver = {
   },
   Post: {
     user: getPostCreator,
+    postId: (post) => {
+      return post.postId || post._id.toString();
+    },
   },
 };
 
