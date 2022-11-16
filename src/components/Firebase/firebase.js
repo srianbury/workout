@@ -7,7 +7,9 @@ import {
   FacebookAuthProvider,
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
+  signOut,
 } from "firebase/auth";
+import { useAuthState as useFirebaseAuthState } from "react-firebase-hooks/auth";
 // import { getAnalytics } from "firebase/analytics";
 
 // const analytics = getAnalytics(app);
@@ -83,8 +85,18 @@ async function handleSendPasswordResetEmail(email) {
   });
 }
 
+function useAuthState(options) {
+  return useFirebaseAuthState(auth, options);
+}
+
+function handleFirebaseSignOut() {
+  signOut(auth);
+}
+
 export {
   signInSignUpWithSocial,
   signInSignUpWithEmailPassword,
   handleSendPasswordResetEmail,
+  useAuthState,
+  handleFirebaseSignOut,
 };

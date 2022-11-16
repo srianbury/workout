@@ -29,7 +29,8 @@ function Profile() {
 }
 
 function ProfileMain() {
-  const { user, updateUser, logout } = useContext(AuthenticatorContext);
+  const { user, handleAuthenticationResponse, logout } =
+    useContext(AuthenticatorContext);
 
   if (!user) {
     return (
@@ -39,16 +40,19 @@ function ProfileMain() {
     );
   }
 
-  return <UserProfile {...{ user, logout, updateUser }} />;
+  return <UserProfile {...{ user, logout, handleAuthenticationResponse }} />;
 }
 
-function UserProfile({ user, logout, updateUser }) {
+function UserProfile({ user, logout, handleAuthenticationResponse }) {
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
         <Stack spacing={2}>
           <Box>Hello, {user.username}</Box>
-          <UpdateUserName user={user} updateUser={updateUser} />
+          <UpdateUserName
+            user={user}
+            handleAuthenticationResponse={handleAuthenticationResponse}
+          />
           <Divider />
           <Box>
             <Button variant="outlined" onClick={logout}>
@@ -61,19 +65,14 @@ function UserProfile({ user, logout, updateUser }) {
   );
 }
 
-function UpdateUserName({ user, updateUser }) {
+function UpdateUserName({ user, handleAuthenticationResponse }) {
   const [updateUserInfo, { data, loading, error, reset }] = useMutation(gql`
     mutation ($token: String!, $userInfo: UserInfo!) {
       updateUserInfo(token: $token, userInfo: $userInfo) {
         success
         message
         user {
-          userId
-          username
-          email
-          initials
-          picture
-          token
+          accessToken
         }
       }
     }
@@ -111,7 +110,10 @@ function UpdateUserName({ user, updateUser }) {
         response.data.updateUserInfo &&
         response.data.updateUserInfo.user
       ) {
-        updateUser(response.data.updateUserInfo.user);
+        handleAuthenticationResponse(
+          response.data.updateUserInfo.user,
+          "SIGN_IN"
+        );
       }
       setSubmitting(false);
       setUpdate(false);
@@ -144,6 +146,7 @@ function UpdateUserName({ user, updateUser }) {
         label="Username"
         variant="outlined"
         {...formik.getFieldProps("username")}
+        autoComplete="off"
         fullWidth
         sx={{
           display: "block",

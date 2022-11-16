@@ -29,7 +29,11 @@ const userSchema = gql`
   type UpdateUserInfoResponse {
     success: Boolean!
     message: String
-    user: User
+    user: UpdateUserResponse
+  }
+
+  type UpdateUserResponse {
+    accessToken: String
   }
 
   type AuthenticationError {

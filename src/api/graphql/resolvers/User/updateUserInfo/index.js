@@ -27,8 +27,8 @@ async function updateUserInfo(
     return {
       success: true,
       user: {
-        ...user._doc,
-        token,
+        accessToken: token, // we're just returning the access token b/c we're going to reauth on the client side to prevent
+        // holding the user state in multiple places
       },
     };
   } catch (e) {

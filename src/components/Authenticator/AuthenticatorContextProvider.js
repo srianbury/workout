@@ -1,48 +1,47 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useMutation, gql } from "@apollo/client";
 import { AuthenticatorContext } from "./AuthenticatorContext";
 import {
   signInSignUpWithSocial,
   signInSignUpWithEmailPassword,
   handleSendPasswordResetEmail,
+  useAuthState,
+  handleFirebaseSignOut,
 } from "../Firebase";
 
 function AuthenticatorContextProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [authenticateToken, { data, loading, error, reset }] = useMutation(gql`
-    mutation ($token: String!, $method: String!) {
-      authenticate(token: $token, method: $method) {
-        authenticationError {
-          type
-          message
-        }
-        user {
-          userId
-          username
-          email
-          initials
-          picture
-          token
+  const [firebaseUser, firebaseUserLoading, firebaseUserError] = useAuthState();
+  const [authenticateToken, { data, /*loading, error,*/ reset }] =
+    useMutation(gql`
+      mutation ($token: String!, $method: String!) {
+        authenticate(token: $token, method: $method) {
+          authenticationError {
+            type
+            message
+          }
+          user {
+            userId
+            username
+            email
+            initials
+            picture
+            token
+          }
         }
       }
-    }
-  `);
-
-  function updateUser(user) {
-    setUser(user);
-  }
+    `);
 
   function logout() {
-    setUser(null);
+    handleFirebaseSignOut();
     reset();
   }
 
   async function handleSignInSignUp(method, provider, meta = {}) {
     // TODO add email/password option
-    let userInfo;
+    let user;
     switch (provider) {
       case "EMAIL_PASSWORD":
-        userInfo = await signInSignUpWithEmailPassword(
+        user = await signInSignUpWithEmailPassword(
           method,
           meta.email,
           meta.password
@@ -50,34 +49,39 @@ function AuthenticatorContextProvider({ children }) {
         break;
       case "GOOGLE":
       case "FACEBOOK":
-        userInfo = await signInSignUpWithSocial(provider);
+        user = await signInSignUpWithSocial(provider);
         break;
     }
 
-    if (!userInfo) {
-      return;
+    if (!user) {
+      return null;
     }
 
-    console.log({ userInfo });
-    const response = await authenticateToken({
-      variables: { token: userInfo.accessToken, method }, // method: SIGN_UP, SIGN_IN
-    });
-    console.log({ response });
+    return await handleAuthenticationResponse(user, method);
+  }
 
-    if (
-      response &&
-      response.data &&
-      response.data.authenticate &&
-      response.data.authenticate.user
-    ) {
-      updateUser(response.data.authenticate.user);
+  async function handleAuthenticationResponse(user, method) {
+    try {
+      if (!user) {
+        return null;
+      }
+
+      console.log("handleAuthenticationResponse", { user });
+      const response = await authenticateToken({
+        variables: { token: user.accessToken, method }, // method: SIGN_UP, SIGN_IN
+      });
+
+      console.log("handleAuthenticationResponse", { response });
+
+      if (response?.data?.authenticate?.authenticationError) {
+        return response.data.authenticate.authenticationError; // return response so it can be used to handle errors where it's used
+      }
+
+      return null;
+    } catch (e) {
+      console.log("handleAuthenticationResponse", { e });
+      return null;
     }
-
-    if (response && response.data && response.data.authenticate) {
-      return response.data.authenticate; // return response so it can be used to handle errors where it's used
-    }
-
-    return null;
   }
 
   const handleSignUpWithGoogle = async () =>
@@ -104,10 +108,32 @@ function AuthenticatorContextProvider({ children }) {
       password,
     });
 
+  async function handleAuthStateChange(user) {
+    try {
+      await handleAuthenticationResponse(user, "SIGN_IN");
+    } catch (e) {
+      console.log("handleAuthStateChange", { e });
+    }
+  }
+
+  useEffect(() => {
+    if (firebaseUser) {
+      handleAuthStateChange(firebaseUser);
+    } else {
+      logout();
+    }
+  }, [firebaseUser]);
+
+  console.log({
+    firebaseUser,
+    firebaseUserLoading,
+    firebaseUserError,
+  });
+
   return (
     <AuthenticatorContext.Provider
       value={{
-        user,
+        user: data?.authenticate?.user || null,
         authenticationError: null, // TODO replace this with local state where used
         logout,
         handleSignUpWithGoogle,
@@ -117,7 +143,7 @@ function AuthenticatorContextProvider({ children }) {
         handleSignUpWithEmailPassword,
         handleSignInWithEmailPassword,
         handleSendPasswordResetEmail,
-        updateUser,
+        handleAuthenticationResponse,
       }}
     >
       {children}

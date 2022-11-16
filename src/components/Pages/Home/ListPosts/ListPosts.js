@@ -26,8 +26,8 @@ function ListPostsSkeleton() {
   return (
     <Box>
       <Grid container spacing={2}>
-        {[1, 2, 3].map((post) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={post.postId}>
+        {[1, 2, 3].map((val) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={val}>
             <PostPreviewSkeleton />
           </Grid>
         ))}
