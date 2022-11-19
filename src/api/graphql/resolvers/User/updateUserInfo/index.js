@@ -7,7 +7,6 @@ async function updateUserInfo(
   info
 ) {
   try {
-    console.log("updateUserInfo");
     const auth = await getAuth(firebaseApp).verifyIdToken(token);
     const user = await models.models.User.findOne({ userId: auth.uid }).exec();
 
@@ -32,7 +31,6 @@ async function updateUserInfo(
       },
     };
   } catch (e) {
-    console.log({ e });
     // add handler to return a special message in the username is already taken
     return {
       success: false,

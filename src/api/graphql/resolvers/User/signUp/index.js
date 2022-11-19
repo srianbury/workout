@@ -31,7 +31,6 @@ async function signUp(parent, { token }, { models, firebaseApp }, info) {
       },
     };
   } catch (e) {
-    console.log(e);
     return {
       authenticationError: {
         message: "An unexpected error occurred.",

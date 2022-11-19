@@ -89,7 +89,6 @@ function extractVideoInformation(url) {
 
 async function createPost(parent, args, { models, firebaseApp }, info) {
   try {
-    console.log("creating post");
     const { token, title, shortDescription, longDescription, videoSource } =
       args;
     const auth = await getAuth(firebaseApp).verifyIdToken(token);
@@ -106,7 +105,6 @@ async function createPost(parent, args, { models, firebaseApp }, info) {
     }
 
     let media = {};
-    console.log({ videoSource });
     const videoInfo = extractVideoInformation(videoSource);
     if (videoInfo) {
       media.video = videoInfo;
@@ -125,10 +123,8 @@ async function createPost(parent, args, { models, firebaseApp }, info) {
       ...newPost._doc,
       user,
     };
-    console.log({ result });
     return result;
   } catch (e) {
-    console.log({ e });
     return null;
   }
 }

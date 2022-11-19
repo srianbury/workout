@@ -57,7 +57,6 @@ async function signInSignUpWithSocial(provider) {
 
 async function signInSignUpWithEmailPassword(method, email, password) {
   try {
-    console.log({ email, password });
     let response;
     switch (method) {
       case "SIGN_UP":
@@ -74,9 +73,7 @@ async function signInSignUpWithEmailPassword(method, email, password) {
 
     const { user } = response;
     return user;
-  } catch (e) {
-    console.log({ e });
-  }
+  } catch {}
 }
 
 async function handleSendPasswordResetEmail(email) {

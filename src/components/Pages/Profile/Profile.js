@@ -103,7 +103,6 @@ function UpdateUserName({ user, handleAuthenticationResponse }) {
           userInfo: { username: values.username },
         },
       });
-      console.log({ response });
       if (
         response &&
         response.data &&
@@ -118,7 +117,6 @@ function UpdateUserName({ user, handleAuthenticationResponse }) {
       setSubmitting(false);
       setUpdate(false);
     } catch (e) {
-      console.log(e);
       setSubmitting(false);
     }
   }

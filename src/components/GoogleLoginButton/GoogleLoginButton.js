@@ -1,7 +1,7 @@
 function GoogleLoginButton() {
   return (
     <div>
-      <button type="button" onClick={() => console.log("TODO")}>
+      <button type="button" onClick={() => {}}>
         Sign Up With Google
       </button>
     </div>

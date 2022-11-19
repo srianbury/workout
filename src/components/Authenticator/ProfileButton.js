@@ -5,7 +5,6 @@ import { AuthenticatorContext } from "../Authenticator";
 
 function ProfileButton() {
   const { user } = useContext(AuthenticatorContext);
-  console.log({ user });
   return (
     <Link href="/profile">
       <Box
