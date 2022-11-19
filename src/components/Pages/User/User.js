@@ -45,7 +45,12 @@ function UserContainer({ username }) {
     return (
       <div>
         <main>
-          <Skeleton height={100} />
+          <Skeleton
+            variant="rectangular"
+            width="100%"
+            height={50}
+            sx={{ mb: 1 }}
+          />
           <Skeleton />
           <Skeleton />
         </main>
