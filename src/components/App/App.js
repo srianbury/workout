@@ -1,17 +1,29 @@
 // https://nextjs.org/docs/advanced-features/custom-app
 import NextHead from "next/head";
-import Script from "next/script";
 import { Container, CssBaseline } from "@mui/material";
+import * as Sentry from "@sentry/react";
+import { BrowserTracing } from "@sentry/tracing";
 import { Apollo } from "../Apollo";
 import { AuthenticatorContextProvider } from "../Authenticator/AuthenticatorContextProvider";
 import { NavDrawerContextProvider } from "../NavDrawer/NavDrawerContextProvider";
 import { NavDrawer } from "../NavDrawer";
 import { Header } from "../Header";
 import { Footer } from "../Footer";
+import { ErrorBoundary } from "../ErrorBoundary";
+
+Sentry.init({
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  integrations: [new BrowserTracing()],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
 
 function App({ Component, pageProps }) {
   return (
-    <>
+    <ErrorBoundary tags={[["location", "global"]]}>
       <Apollo>
         <NextHead>
           <title>Workout</title>
@@ -32,16 +44,18 @@ function App({ Component, pageProps }) {
           <NavDrawerContextProvider>
             <Header />
             <NavDrawer />
-            <div className="content">
-              <Container fixed>
-                <Component {...pageProps} />
-              </Container>
-            </div>
+            <ErrorBoundary tags={[["location", "page"]]}>
+              <div className="content">
+                <Container fixed>
+                  <Component {...pageProps} />
+                </Container>
+              </div>
+            </ErrorBoundary>
             <Footer />
           </NavDrawerContextProvider>
         </AuthenticatorContextProvider>
       </Apollo>
-    </>
+    </ErrorBoundary>
   );
 }
 
