@@ -126,16 +126,12 @@ function PostViewSkeleton() {
     <div>
       <main>
         <Box sx={{ mb: 1 }}>
-          <Skeleton height="100%" width={"100%"}>
-            <img
-              src={"https://img.youtube.com/vi/Kuv0xThzxrU/sddefault.jpg"}
-              style={{
-                width: "100%",
-                height: "auto",
-                margin: "auto",
-              }}
-            />
-          </Skeleton>
+          <Skeleton
+            variant="rectangular"
+            width="100%"
+            height={200}
+            sx={{ mb: 1 }}
+          />
         </Box>
         <Typography
           variant="subtitle2"
@@ -147,52 +143,16 @@ function PostViewSkeleton() {
         >
           <Skeleton />
         </Typography>
-        <Card variant="outlined" sx={{ mb: 1 }}>
-          <Grid
-            container
-            direction="row"
-            justifyContent="space-between"
-            sx={{ p: 1 }}
-          >
-            <div>
-              <Grid
-                container
-                direction="row"
-                justifyContent="flex-start"
-                alignItems="center"
-              >
-                <Box
-                  sx={{
-                    "&:hover": {
-                      cursor: "pointer",
-                    },
-                  }}
-                >
-                  <Skeleton>
-                    <Avatar />
-                  </Skeleton>
-                </Box>
-                <Box sx={{ ml: 1 }}>
-                  <Skeleton>
-                    <Box
-                      sx={{
-                        "&:hover": {
-                          cursor: "pointer",
-                          textDecoration: "underline",
-                        },
-                      }}
-                    >
-                      Username
-                    </Box>
-                  </Skeleton>
-                  <Skeleton>
-                    <Box>0 Followers</Box>
-                  </Skeleton>
-                </Box>
-              </Grid>
-            </div>
-          </Grid>
-        </Card>
+        <Typography
+          variant="subtitle2"
+          component="div"
+          sx={{
+            mb: 1,
+            fontWeight: "bold",
+          }}
+        >
+          <Skeleton />
+        </Typography>
       </main>
     </div>
   );

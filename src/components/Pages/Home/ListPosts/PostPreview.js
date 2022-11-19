@@ -175,16 +175,12 @@ function PostPreviewSkeleton() {
         mb: 2,
       }}
     >
-      <Skeleton>
-        <img
-          src={"https://img.youtube.com/vi/Kuv0xThzxrU/sddefault.jpg"}
-          style={{
-            width: "100%",
-            height: "auto",
-            margin: "auto",
-          }}
-        />
-      </Skeleton>
+      <Skeleton
+        variant="rectangular"
+        width="100%"
+        height={200}
+        sx={{ mb: 1 }}
+      />
       <CardHeader
         sx={{
           m: 0,
@@ -241,20 +237,7 @@ function PostPreviewSkeleton() {
                     </Typography>
                   </Skeleton>
                 </Box>
-                <Box component="span" sx={{ display: "inline", mx: 0.5 }}>
-                  <Typography variant="subtitle2" component="span">
-                    •
-                  </Typography>
-                </Box>
               </>
-
-              <Box component="span" sx={{ display: "inline" }}>
-                <Skeleton>
-                  <Typography variant="subtitle2" component="span">
-                    date
-                  </Typography>
-                </Skeleton>
-              </Box>
             </Box>
           </Box>
         }
