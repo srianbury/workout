@@ -68,7 +68,6 @@ function SignUp() {
         password: values.password,
       });
     } catch (e) {
-      console.log({ e });
       setSubmitting(false);
     }
   }

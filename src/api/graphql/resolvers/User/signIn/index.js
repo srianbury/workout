@@ -5,8 +5,6 @@ async function signIn(parent, { token }, { models, firebaseApp }, info) {
     const auth = await getAuth(firebaseApp).verifyIdToken(token);
     const user = await models.models.User.findOne({ userId: auth.uid }).exec();
 
-    console.log({ user });
-
     if (!user) {
       return {
         authenticationError: {
@@ -23,7 +21,6 @@ async function signIn(parent, { token }, { models, firebaseApp }, info) {
       },
     };
   } catch (e) {
-    console.log(e);
     return {
       authenticationError: {
         message: "An unexpected error occurred.",

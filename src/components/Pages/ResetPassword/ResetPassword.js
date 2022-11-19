@@ -46,14 +46,12 @@ function ResetPasswordForm() {
     try {
       setNotification(null);
       setError(false);
-      console.log(values.email);
       await handleSendPasswordResetEmail(values.email);
       setSubmitting(false);
       setNotification(
         "Password reset sent.  Please check your spam folder if you do not see it withing a few minutes."
       );
     } catch (e) {
-      console.log({ e });
       setNotification(null);
       setError(true);
     }

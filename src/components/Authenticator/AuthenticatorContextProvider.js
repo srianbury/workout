@@ -66,12 +66,9 @@ function AuthenticatorContextProvider({ children }) {
         return null;
       }
 
-      console.log("handleAuthenticationResponse", { user });
       const response = await authenticateToken({
         variables: { token: user.accessToken, method }, // method: SIGN_UP, SIGN_IN
       });
-
-      console.log("handleAuthenticationResponse", { response });
 
       if (response?.data?.authenticate?.authenticationError) {
         return response.data.authenticate.authenticationError; // return response so it can be used to handle errors where it's used
@@ -79,7 +76,6 @@ function AuthenticatorContextProvider({ children }) {
 
       return null;
     } catch (e) {
-      console.log("handleAuthenticationResponse", { e });
       return null;
     }
   }
@@ -111,9 +107,7 @@ function AuthenticatorContextProvider({ children }) {
   async function handleAuthStateChange(user) {
     try {
       await handleAuthenticationResponse(user, "SIGN_IN");
-    } catch (e) {
-      console.log("handleAuthStateChange", { e });
-    }
+    } catch (e) {}
   }
 
   useEffect(() => {
@@ -123,12 +117,6 @@ function AuthenticatorContextProvider({ children }) {
       logout();
     }
   }, [firebaseUser]);
-
-  console.log({
-    firebaseUser,
-    firebaseUserLoading,
-    firebaseUserError,
-  });
 
   return (
     <AuthenticatorContext.Provider
