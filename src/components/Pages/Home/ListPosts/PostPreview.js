@@ -1,9 +1,29 @@
+import { useContext, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { Avatar, Box, CardHeader, Skeleton, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  CardHeader,
+  IconButton,
+  Menu,
+  MenuItem,
+  Skeleton,
+  Typography,
+} from "@mui/material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import PropTypes from "prop-types";
+import { DeletePostDialogContext } from "../../../DeletePostDialog";
+import { PostActionItem } from "../../../PostActionItem";
 
-function PostPreview({ post, variant }) {
+function PostPreview({ user, post, variant }) {
+  function userOwnsPost() {
+    if (!user || !user.userId) {
+      return false;
+    }
+
+    return user?.userId === post?.user?.userId;
+  }
+
   return (
     <Box
       sx={{
@@ -81,6 +101,11 @@ function PostPreview({ post, variant }) {
               </Box>
             </Box>
           </Box>
+        }
+        action={
+          variant === "User" && userOwnsPost() ? (
+            <PostActionItem postId={post.postId} />
+          ) : null
         }
       />
     </Box>

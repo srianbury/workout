@@ -7,3 +7,4 @@ export { SignIn } from "./SignIn";
 export { SignUp } from "./SignUp";
 export { Create } from "./Create";
 export { ResetPassword } from "./ResetPassword";
+export { UpdatePost } from "./UpdatePost";
