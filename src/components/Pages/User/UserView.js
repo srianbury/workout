@@ -2,6 +2,7 @@ import Head from "next/head";
 import { Box } from "@mui/material";
 import { useQuery, gql } from "@apollo/client";
 import { ListPosts, ListPostsSkeleton } from "../Home/ListPosts";
+import { DeletePostDialogContextProvider } from "../../DeletePostDialog";
 
 function UserView({ user }) {
   return (
@@ -18,7 +19,7 @@ function UserView({ user }) {
 }
 
 function UsersPosts({ username }) {
-  const { loading, error, data } = useQuery(
+  const { loading, error, data, refetch } = useQuery(
     gql`
       query ($username: String!) {
         getPostsByUsername(username: $username) {
@@ -36,6 +37,7 @@ function UsersPosts({ username }) {
           user {
             username
             initials
+            userId
           }
         }
       }
@@ -55,7 +57,11 @@ function UsersPosts({ username }) {
     return <Box>No posts found.</Box>;
   }
 
-  return <ListPosts posts={data.getPostsByUsername} variant="User" />;
+  return (
+    <DeletePostDialogContextProvider afterDeleteCb={refetch}>
+      <ListPosts posts={data.getPostsByUsername} variant="User" />
+    </DeletePostDialogContextProvider>
+  );
 }
 
 export { UserView };

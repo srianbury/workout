@@ -49,3 +49,8 @@ h6 {
     line-clamp: 5;
     -webkit-box-orient: vertical;
 }
+
+.MuiCardHeader-action {
+    margin-right: 0;
+    margin-top: 0;
+}

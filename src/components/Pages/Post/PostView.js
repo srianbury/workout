@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import Link from "next/link";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import {
   Avatar,
   Box,
@@ -10,6 +12,9 @@ import {
   Skeleton,
 } from "@mui/material";
 import LiteYouTubeEmbed from "react-lite-youtube-embed";
+import { AuthenticatorContext } from "../../Authenticator";
+import { PostActionItem } from "../../PostActionItem";
+import { DeletePostDialogContextProvider } from "../../DeletePostDialog";
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 
 function PostView({ post }) {
@@ -89,7 +94,7 @@ function PostView({ post }) {
                 </Box>
               </Grid>
             </div>
-            <Button variant="outlined">Follow</Button>
+            <Options postId={post.postId} postOwnerId={post.user.userId} />
           </Grid>
         </Card>
         <Box sx={{ whiteSpace: "pre-wrap" }}>{post.longDescription}</Box>
@@ -156,6 +161,27 @@ function PostViewSkeleton() {
       </main>
     </div>
   );
+}
+
+function Options({ postId, postOwnerId }) {
+  const { user } = useContext(AuthenticatorContext);
+  const router = useRouter();
+
+  function afterDelete() {
+    router.push(`/u/${user.username}`);
+  }
+
+  return user && postOwnerId && user.userId === postOwnerId ? (
+    <DeletePostDialogContextProvider afterDeleteCb={afterDelete}>
+      <PostActionItem postId={postId} />
+    </DeletePostDialogContextProvider>
+  ) : (
+    <FollowButton />
+  );
+}
+
+function FollowButton() {
+  return <Button variant="outlined">Follow</Button>;
 }
 
 export { PostView, PostViewSkeleton };
