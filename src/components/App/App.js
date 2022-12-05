@@ -1,6 +1,7 @@
 // https://nextjs.org/docs/advanced-features/custom-app
 import NextHead from "next/head";
 import { Container, CssBaseline } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 import { Apollo } from "../Apollo";
@@ -19,6 +20,15 @@ Sentry.init({
   // of transactions for performance monitoring.
   // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
+});
+
+const theme = createTheme({
+  palette: {
+    neutral: {
+      main: "#757575",
+      contrastText: "#fff",
+    },
+  },
 });
 
 function App({ Component, pageProps }) {
@@ -40,20 +50,22 @@ function App({ Component, pageProps }) {
           ></script>
         </NextHead>
         <CssBaseline />
-        <AuthenticatorContextProvider>
-          <NavDrawerContextProvider>
-            <Header />
-            <NavDrawer />
-            <ErrorBoundary tags={[["location", "page"]]}>
-              <div className="content">
-                <Container fixed>
-                  <Component {...pageProps} />
-                </Container>
-              </div>
-            </ErrorBoundary>
-            <Footer />
-          </NavDrawerContextProvider>
-        </AuthenticatorContextProvider>
+        <ThemeProvider theme={theme}>
+          <AuthenticatorContextProvider>
+            <NavDrawerContextProvider>
+              <Header />
+              <NavDrawer />
+              <ErrorBoundary tags={[["location", "page"]]}>
+                <div className="content">
+                  <Container fixed>
+                    <Component {...pageProps} />
+                  </Container>
+                </div>
+              </ErrorBoundary>
+              <Footer />
+            </NavDrawerContextProvider>
+          </AuthenticatorContextProvider>
+        </ThemeProvider>
       </Apollo>
     </ErrorBoundary>
   );
