@@ -21,6 +21,7 @@ function Home() {
           username
           initials
         }
+        favorites
       }
     }
   `);
