@@ -21,38 +21,49 @@ function Create() {
 
 function CreatePost({ user }) {
   const router = useRouter();
-  const [createPost, { loading, error }] = useMutation(gql`
-    mutation (
-      $token: String!
-      $title: String!
-      $shortDescription: String!
-      $longDescription: String!
-      $videoSource: String
-    ) {
-      createPost(
-        token: $token
-        title: $title
-        shortDescription: $shortDescription
-        longDescription: $longDescription
-        videoSource: $videoSource
+  const [createPost, { loading, error }] = useMutation(
+    gql`
+      mutation (
+        $token: String!
+        $title: String!
+        $shortDescription: String!
+        $longDescription: String!
+        $videoSource: String
       ) {
-        postId
-        title
-        shortDescription
-        longDescription
-        media {
-          video {
-            source
-            id
+        createPost(
+          token: $token
+          title: $title
+          shortDescription: $shortDescription
+          longDescription: $longDescription
+          videoSource: $videoSource
+        ) {
+          postId
+          title
+          shortDescription
+          longDescription
+          media {
+            video {
+              source
+              id
+            }
+          }
+          user {
+            userId
+            username
           }
         }
-        user {
-          userId
-          username
-        }
       }
+    `,
+    {
+      options: {
+        context: {
+          headers: {
+            authorization: user?.token ? user.token : null,
+          },
+        },
+      },
     }
-  `);
+  );
 
   const formik = useFormik({
     initialValues: {

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import Link from "next/link";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -7,17 +7,64 @@ import {
   Box,
   Button,
   Card,
+  CircularProgress,
   Grid,
   Typography,
   Skeleton,
 } from "@mui/material";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import LiteYouTubeEmbed from "react-lite-youtube-embed";
+import { useMutation, gql } from "@apollo/client";
 import { AuthenticatorContext } from "../../Authenticator";
 import { PostActionItem } from "../../PostActionItem";
 import { DeletePostDialogContextProvider } from "../../DeletePostDialog";
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 
-function PostView({ post }) {
+function PostView({ post, refetch }) {
+  const [favoriting, setFavoriting] = useState(false);
+  const { user } = useContext(AuthenticatorContext);
+  const [favoritePost] = useMutation(
+    gql`
+      mutation ($postId: ID!, $operation: String!) {
+        favoritePost(postId: $postId, operation: $operation)
+      }
+    `
+  );
+
+  async function onFavoriteClick() {
+    try {
+      if (favoriting) {
+        return;
+      }
+
+      setFavoriting(true);
+      if (!user) {
+        return;
+      }
+
+      const result = await favoritePost({
+        variables: {
+          postId: post.postId,
+          operation: post.favorited ? "UNLIKE" : "LIKE",
+        },
+        context: {
+          headers: {
+            authorization: user?.token,
+          },
+        },
+      });
+
+      if (result && result.data && result.data.favoritePost) {
+        await refetch({ postId: post.postId });
+      }
+    } catch (e) {
+      console.log({ e });
+    } finally {
+      setFavoriting(false);
+    }
+  }
+
   return (
     <div>
       <Head>
@@ -31,12 +78,33 @@ function PostView({ post }) {
           variant="subtitle2"
           component="div"
           sx={{
-            mb: 1,
             fontWeight: "bold",
           }}
         >
           {post.title}
         </Typography>
+        <Typography component="div">
+          {`${post.favorites} favorite${post.favorites === 1 ? "" : "s"}`} •{" "}
+          {new Date(post.createdAt).toLocaleDateString()}
+        </Typography>
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-end"
+          alignItems="center"
+          sx={{
+            mb: 1,
+            pr: 1,
+          }}
+        >
+          {favoriting ? (
+            <CircularProgress size={25} />
+          ) : post.favorited ? (
+            <FavoriteIcon onClick={onFavoriteClick} />
+          ) : (
+            <FavoriteBorderIcon onClick={onFavoriteClick} />
+          )}
+        </Grid>
         <Card variant="outlined" sx={{ mb: 1 }}>
           <Grid
             container

@@ -1,18 +1,6 @@
-import { useContext, useState } from "react";
 import Link from "next/link";
-import {
-  Avatar,
-  Box,
-  CardHeader,
-  IconButton,
-  Menu,
-  MenuItem,
-  Skeleton,
-  Typography,
-} from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { Avatar, Box, CardHeader, Skeleton, Typography } from "@mui/material";
 import PropTypes from "prop-types";
-import { DeletePostDialogContext } from "../../../DeletePostDialog";
 import { PostActionItem } from "../../../PostActionItem";
 
 function PostPreview({ user, post, variant }) {
@@ -63,9 +51,7 @@ function PostPreview({ user, post, variant }) {
               {variant === "User" ? null : (
                 <>
                   <Box
-                    component="span"
                     sx={{
-                      display: "inline",
                       "&:hover": {
                         cursor: "pointer",
                         textDecoration: "underline",
@@ -87,13 +73,20 @@ function PostPreview({ user, post, variant }) {
                       </Typography>
                     </Link>
                   </Box>
-                  <Box component="span" sx={{ display: "inline", mx: 0.5 }}>
-                    <Typography variant="subtitle2" component="span">
-                      •
-                    </Typography>
-                  </Box>
                 </>
               )}
+              <Box component="span" sx={{ display: "inline" }}>
+                <Typography variant="subtitle2" component="span">
+                  {`${post.favorites} favorite${
+                    post.favorites === 1 ? "" : "s"
+                  }`}
+                </Typography>
+              </Box>
+              <Box component="span" sx={{ display: "inline", mx: 0.5 }}>
+                <Typography variant="subtitle2" component="span">
+                  •
+                </Typography>
+              </Box>
               <Box component="span" sx={{ display: "inline" }}>
                 <Typography variant="subtitle2" component="span">
                   {new Date(post.createdAt).toLocaleDateString()}
