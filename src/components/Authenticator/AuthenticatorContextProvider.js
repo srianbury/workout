@@ -15,18 +15,12 @@ function AuthenticatorContextProvider({ children }) {
     useMutation(gql`
       mutation ($token: String!, $method: String!) {
         authenticate(token: $token, method: $method) {
-          authenticationError {
-            type
-            message
-          }
-          user {
-            userId
-            username
-            email
-            initials
-            picture
-            token
-          }
+          userId
+          username
+          email
+          initials
+          picture
+          token
         }
       }
     `);
@@ -70,8 +64,8 @@ function AuthenticatorContextProvider({ children }) {
         variables: { token: user.accessToken, method }, // method: SIGN_UP, SIGN_IN
       });
 
-      if (response?.data?.authenticate?.authenticationError) {
-        return response.data.authenticate.authenticationError; // return response so it can be used to handle errors where it's used
+      if (response?.errors) {
+        return response.errors;
       }
 
       return null;
@@ -121,7 +115,7 @@ function AuthenticatorContextProvider({ children }) {
   return (
     <AuthenticatorContext.Provider
       value={{
-        user: data?.authenticate?.user || null,
+        user: data?.authenticate,
         authenticationError: null, // TODO replace this with local state where used
         logout,
         handleSignUpWithGoogle,
