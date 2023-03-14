@@ -74,37 +74,61 @@ function PostView({ post, refetch }) {
         <Box sx={{ mb: 2 }}>
           <PostMedia media={post.media} />
         </Box>
-        <Typography
-          variant="subtitle2"
-          component="div"
-          sx={{
-            fontWeight: "bold",
-          }}
-        >
-          {post.title}
-        </Typography>
-        <Typography component="div">
+
+        <Grid item xs={12} sm container>
+          <Grid item xs container direction="column" spacing={2}>
+            <Grid item xs>
+              <Typography
+                variant="subtitle2"
+                sx={{
+                  fontWeight: "bold",
+                  mr: 1,
+                }}
+              >
+                {post.title}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-end"
+              alignItems="center"
+              sx={{
+                mb: 1,
+              }}
+            >
+              {favoriting ? (
+                <CircularProgress size={25} />
+              ) : post.favorited ? (
+                <FavoriteIcon
+                  onClick={onFavoriteClick}
+                  sx={{
+                    "&:hover": {
+                      cursor: "pointer",
+                      textDecoration: "underline",
+                    },
+                  }}
+                />
+              ) : (
+                <FavoriteBorderIcon
+                  onClick={onFavoriteClick}
+                  sx={{
+                    "&:hover": {
+                      cursor: "pointer",
+                      textDecoration: "underline",
+                    },
+                  }}
+                />
+              )}
+            </Grid>
+          </Grid>
+        </Grid>
+        <Typography component="div" sx={{ mb: 2 }}>
           {`${post.favorites} favorite${post.favorites === 1 ? "" : "s"}`} •{" "}
           {new Date(post.createdAt).toLocaleDateString()}
         </Typography>
-        <Grid
-          container
-          direction="row"
-          justifyContent="flex-end"
-          alignItems="center"
-          sx={{
-            mb: 1,
-            pr: 1,
-          }}
-        >
-          {favoriting ? (
-            <CircularProgress size={25} />
-          ) : post.favorited ? (
-            <FavoriteIcon onClick={onFavoriteClick} />
-          ) : (
-            <FavoriteBorderIcon onClick={onFavoriteClick} />
-          )}
-        </Grid>
         <Card variant="outlined" sx={{ mb: 1 }}>
           <Grid
             container
