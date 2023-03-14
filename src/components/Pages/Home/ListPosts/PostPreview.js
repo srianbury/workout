@@ -50,14 +50,7 @@ function PostPreview({ user, post, variant }) {
             <Box>
               {variant === "User" ? null : (
                 <>
-                  <Box
-                    sx={{
-                      "&:hover": {
-                        cursor: "pointer",
-                        textDecoration: "underline",
-                      },
-                    }}
-                  >
+                  <Box>
                     <Link href={`/u/${post.user.username}/`}>
                       <Typography
                         variant="subtitle2"
@@ -72,26 +65,32 @@ function PostPreview({ user, post, variant }) {
                         {post.user.username}
                       </Typography>
                     </Link>
+
+                    <Box component="span" sx={{ display: "inline", mx: 0.5 }}>
+                      <Typography variant="subtitle2" component="span">
+                        •
+                      </Typography>
+                    </Box>
+                    <Box component="span" sx={{ display: "inline" }}>
+                      <Typography variant="subtitle2" component="span">
+                        {`${post.favorites} favorite${
+                          post.favorites === 1 ? "" : "s"
+                        }`}
+                      </Typography>
+                    </Box>
+                    <Box component="span" sx={{ display: "inline", mx: 0.5 }}>
+                      <Typography variant="subtitle2" component="span">
+                        •
+                      </Typography>
+                    </Box>
+                    <Box component="span" sx={{ display: "inline" }}>
+                      <Typography variant="subtitle2" component="span">
+                        {new Date(post.createdAt).toLocaleDateString()}
+                      </Typography>
+                    </Box>
                   </Box>
                 </>
               )}
-              <Box component="span" sx={{ display: "inline" }}>
-                <Typography variant="subtitle2" component="span">
-                  {`${post.favorites} favorite${
-                    post.favorites === 1 ? "" : "s"
-                  }`}
-                </Typography>
-              </Box>
-              <Box component="span" sx={{ display: "inline", mx: 0.5 }}>
-                <Typography variant="subtitle2" component="span">
-                  •
-                </Typography>
-              </Box>
-              <Box component="span" sx={{ display: "inline" }}>
-                <Typography variant="subtitle2" component="span">
-                  {new Date(post.createdAt).toLocaleDateString()}
-                </Typography>
-              </Box>
             </Box>
           </Box>
         }
