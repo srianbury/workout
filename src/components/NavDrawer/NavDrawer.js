@@ -1,6 +1,5 @@
 import { useContext } from "react";
 import { Box, Drawer } from "@mui/material";
-import NextLink from "next/link";
 import { NavDrawerContext } from ".";
 import { DrawerLink } from "./DrawerLink";
 
@@ -17,6 +16,7 @@ function NavDrawer() {
       >
         <DrawerLink href="/" text="Home" />
         <DrawerLink href="/about" text="About" />
+        <DrawerLink href="/create" text="Create Post" />
       </Box>
     </Drawer>
   );

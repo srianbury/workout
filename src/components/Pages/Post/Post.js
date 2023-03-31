@@ -1,6 +1,8 @@
 import { useRouter } from "next/router";
 import { useQuery, gql } from "@apollo/client";
-import { PostView } from "./PostView";
+import { PostView, PostViewSkeleton } from "./PostView";
+import { useContext } from "react";
+import { AuthenticatorContext } from "../../Authenticator";
 
 function Post() {
   const { postId } = useRouter().query;
@@ -19,7 +21,8 @@ function Post() {
 }
 
 function PostContainter({ postId }) {
-  const { loading, error, data } = useQuery(
+  const { user } = useContext(AuthenticatorContext);
+  const { loading, error, data, refetch } = useQuery(
     gql`
       query Post($postId: ID!) {
         getPostByPostId(postId: $postId) {
@@ -27,17 +30,32 @@ function PostContainter({ postId }) {
           title
           shortDescription
           longDescription
-          createdTs
-          videoUrlId
+          createdAt
+          media {
+            photo
+            video {
+              source
+              id
+            }
+          }
           user {
             userId
             username
             initials
           }
+          favorited
+          favorites
         }
       }
     `,
-    { variables: { postId } }
+    {
+      variables: { postId },
+      context: {
+        headers: {
+          authorization: user?.token,
+        },
+      },
+    }
   );
 
   if (error) {
@@ -51,13 +69,7 @@ function PostContainter({ postId }) {
   }
 
   if (loading) {
-    return (
-      <div>
-        <main>
-          <div>Loading...</div>
-        </main>
-      </div>
-    );
+    return <PostViewSkeleton />;
   }
 
   if (!data.getPostByPostId) {
@@ -70,7 +82,7 @@ function PostContainter({ postId }) {
     );
   }
 
-  return <PostView post={data.getPostByPostId} />;
+  return <PostView post={data.getPostByPostId} refetch={refetch} />;
 }
 
 export { Post };

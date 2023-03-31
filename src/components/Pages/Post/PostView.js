@@ -1,37 +1,133 @@
+import { useState, useContext } from "react";
 import Link from "next/link";
 import Head from "next/head";
-import { Box, Button, Card, Grid, Typography } from "@mui/material";
+import { useRouter } from "next/router";
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CircularProgress,
+  Grid,
+  Typography,
+  Skeleton,
+} from "@mui/material";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import LiteYouTubeEmbed from "react-lite-youtube-embed";
+import { useMutation, gql } from "@apollo/client";
+import { AuthenticatorContext } from "../../Authenticator";
+import { PostActionItem } from "../../PostActionItem";
+import { DeletePostDialogContextProvider } from "../../DeletePostDialog";
 import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 
-function PostView({ post }) {
+function PostView({ post, refetch }) {
+  const [favoriting, setFavoriting] = useState(false);
+  const { user } = useContext(AuthenticatorContext);
+  const [favoritePost] = useMutation(
+    gql`
+      mutation ($postId: ID!, $operation: String!) {
+        favoritePost(postId: $postId, operation: $operation)
+      }
+    `
+  );
+
+  async function onFavoriteClick() {
+    try {
+      if (favoriting) {
+        return;
+      }
+
+      setFavoriting(true);
+      if (!user) {
+        return;
+      }
+
+      const result = await favoritePost({
+        variables: {
+          postId: post.postId,
+          operation: post.favorited ? "UNLIKE" : "LIKE",
+        },
+        context: {
+          headers: {
+            authorization: user?.token,
+          },
+        },
+      });
+
+      if (result && result.data && result.data.favoritePost) {
+        await refetch({ postId: post.postId });
+      }
+    } catch (e) {
+      console.log({ e });
+    } finally {
+      setFavoriting(false);
+    }
+  }
+
   return (
     <div>
       <Head>
         <title>{post.title} | Workout</title>
       </Head>
       <main>
-        <Box sx={{ mb: 1 }}>
-          {post.videoUrlId ? (
-            <LiteYouTubeEmbed
-              id={post.videoUrlId}
-              title="YouTube video player"
-            />
-          ) : null}
+        <Box sx={{ mb: 2 }}>
+          <PostMedia media={post.media} />
         </Box>
-        <Typography
-          variant="subtitle2"
-          component="div"
-          sx={{
-            mb: 1,
-            fontWeight: "bold",
-            "&:hover": {
-              cursor: "pointer",
-              textDecoration: "underline",
-            },
-          }}
-        >
-          {post.title}
+
+        <Grid item xs={12} sm container>
+          <Grid item xs container direction="column" spacing={2}>
+            <Grid item xs>
+              <Typography
+                variant="subtitle2"
+                sx={{
+                  fontWeight: "bold",
+                  mr: 1,
+                }}
+              >
+                {post.title}
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-end"
+              alignItems="center"
+              sx={{
+                mb: 1,
+              }}
+            >
+              {favoriting ? (
+                <CircularProgress size={25} />
+              ) : post.favorited ? (
+                <FavoriteIcon
+                  onClick={onFavoriteClick}
+                  sx={{
+                    "&:hover": {
+                      cursor: "pointer",
+                      textDecoration: "underline",
+                    },
+                  }}
+                />
+              ) : (
+                <FavoriteBorderIcon
+                  onClick={onFavoriteClick}
+                  sx={{
+                    "&:hover": {
+                      cursor: "pointer",
+                      textDecoration: "underline",
+                    },
+                  }}
+                />
+              )}
+            </Grid>
+          </Grid>
+        </Grid>
+        <Typography component="div" sx={{ mb: 2 }}>
+          {`${post.favorites} favorite${post.favorites === 1 ? "" : "s"}`} •{" "}
+          {new Date(post.createdAt).toLocaleDateString()}
         </Typography>
         <Card variant="outlined" sx={{ mb: 1 }}>
           <Grid
@@ -55,15 +151,22 @@ function PostView({ post }) {
                       },
                     }}
                   >
-                    <img
-                      src={`https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`}
-                      style={{
-                        width: "100%",
-                        height: "auto",
-                        borderRadius: "50%",
-                        maxWidth: "50px",
-                      }}
-                    />
+                    <Avatar
+                      alt={post.user.initials}
+                      src={
+                        post.user.picture ||
+                        `https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`
+                      }
+                    >
+                      <img
+                        alt={post.user.initials}
+                        src={
+                          post.user.picture ||
+                          `https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`
+                        }
+                        referrerPolicy="no-referrer"
+                      />
+                    </Avatar>
                   </Box>
                 </Link>
                 <Box sx={{ ml: 1 }}>
@@ -83,7 +186,7 @@ function PostView({ post }) {
                 </Box>
               </Grid>
             </div>
-            <Button variant="outlined">Follow</Button>
+            <Options postId={post.postId} postOwnerId={post.user.userId} />
           </Grid>
         </Card>
         <Box sx={{ whiteSpace: "pre-wrap" }}>{post.longDescription}</Box>
@@ -92,24 +195,85 @@ function PostView({ post }) {
   );
 }
 
-/**
- * {
-    "post": {
-        "__typename": "Post",
-        [x] "postId": "1",
-        [x] "title": "Chris Hemsworth's Workout Explained By His Personal Trainer | Train Like a Celebrity | Men's Health",
-        [x] "shortDescription": "Full body",
-        "longDescription": "Describe the workout here",
-        "createdTs": "2022-01-01T00:00:00.000Z",
-        "videoUrlId": "Kuv0xThzxrU",
-        "user": {
-            "__typename": "User",
-            "userId": "1",
-            "username": "brian",
-            "initials": "b"
-        }
-    }
-}
- */
+function PostMedia({ media }) {
+  if (media?.photo) {
+    return (
+      <img
+        src={media.photo}
+        style={{
+          width: "100%",
+          height: "auto",
+          margin: "auto",
+        }}
+      />
+    );
+  }
 
-export { PostView };
+  if (media?.video?.source === "YOUTUBE") {
+    return (
+      <LiteYouTubeEmbed id={media.video.id} title="YouTube video player" />
+    );
+  }
+
+  return null;
+}
+
+function PostViewSkeleton() {
+  return (
+    <div>
+      <main>
+        <Box sx={{ mb: 1 }}>
+          <Skeleton
+            variant="rectangular"
+            width="100%"
+            height={200}
+            sx={{ mb: 1 }}
+          />
+        </Box>
+        <Typography
+          variant="subtitle2"
+          component="div"
+          sx={{
+            mb: 1,
+            fontWeight: "bold",
+          }}
+        >
+          <Skeleton />
+        </Typography>
+        <Typography
+          variant="subtitle2"
+          component="div"
+          sx={{
+            mb: 1,
+            fontWeight: "bold",
+          }}
+        >
+          <Skeleton />
+        </Typography>
+      </main>
+    </div>
+  );
+}
+
+function Options({ postId, postOwnerId }) {
+  const { user } = useContext(AuthenticatorContext);
+  const router = useRouter();
+
+  function afterDelete() {
+    router.push(`/u/${user.username}`);
+  }
+
+  return user && postOwnerId && user.userId === postOwnerId ? (
+    <DeletePostDialogContextProvider afterDeleteCb={afterDelete}>
+      <PostActionItem postId={postId} />
+    </DeletePostDialogContextProvider>
+  ) : (
+    <FollowButton />
+  );
+}
+
+function FollowButton() {
+  return <Button variant="outlined">Follow</Button>;
+}
+
+export { PostView, PostViewSkeleton };

@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { useQuery, gql } from "@apollo/client";
-import { ListPosts } from "./ListPosts";
+import { ListPosts, ListPostsSkeleton } from "./ListPosts";
 
 function Home() {
   const { loading, error, data } = useQuery(gql`
@@ -8,13 +8,20 @@ function Home() {
       getPosts {
         postId
         title
-        createdTs
+        createdAt
         shortDescription
-        videoUrlId
+        media {
+          photo
+          video {
+            source
+            id
+          }
+        }
         user {
           username
           initials
         }
+        favorites
       }
     }
   `);
@@ -26,7 +33,7 @@ function Home() {
         {error ? (
           <Box>An unexpected error occurred.</Box>
         ) : loading ? (
-          <Box>Loading...</Box>
+          <ListPostsSkeleton />
         ) : (
           <ListPosts posts={data.getPosts} />
         )}

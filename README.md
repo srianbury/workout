@@ -81,4 +81,13 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 ## TODO:
 
-1. Continue to build out the design in order to see what features we need to add
+1. Implement username password login
+2. remove the methods using mock data and use data from the database
+
+## MVP:
+
+- Local Storage or firebase hook to persist auth
+  - https://firebase.google.com/docs/reference/js/v8/firebase.auth.Auth#onauthstatechanged
+  - I think I also want to send a re-authenticate to the graphql api when the user changes their user info,
+    so we can use the data from the graphql mutation, rather than having two states for the user info
+- Global Error boundary to catch errors
