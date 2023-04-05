@@ -48,6 +48,7 @@ function UpdatePostContainter({ postId }) {
             userId
             username
             initials
+            picture
           }
         }
       }

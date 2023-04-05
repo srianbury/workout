@@ -42,6 +42,7 @@ function PostContainter({ postId }) {
             userId
             username
             initials
+            picture
           }
           favorited
           favorites

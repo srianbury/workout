@@ -20,6 +20,7 @@ function Home() {
         user {
           username
           initials
+          picture
         }
         favorites
       }
