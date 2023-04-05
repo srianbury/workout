@@ -38,6 +38,7 @@ function UsersPosts({ username }) {
             username
             initials
             userId
+            picture
           }
         }
       }
