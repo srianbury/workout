@@ -10,7 +10,6 @@ import {
 } from "../Firebase";
 
 function AuthenticatorContextProvider({ children }) {
-  const [firebaseUser, firebaseUserLoading, firebaseUserError] = useAuthState();
   const [authenticateToken, { data, /*loading, error,*/ reset }] =
     useMutation(gql`
       mutation ($token: String!, $method: String!) {
@@ -98,19 +97,7 @@ function AuthenticatorContextProvider({ children }) {
       password,
     });
 
-  async function handleAuthStateChange(user) {
-    try {
-      await handleAuthenticationResponse(user, "SIGN_IN");
-    } catch (e) {}
-  }
-
-  useEffect(() => {
-    if (firebaseUser) {
-      handleAuthStateChange(firebaseUser);
-    } else {
-      logout();
-    }
-  }, [firebaseUser]);
+  console.log("AUTHENTICATOR_CONTEXT", data);
 
   return (
     <AuthenticatorContext.Provider
