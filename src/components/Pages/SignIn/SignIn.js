@@ -58,21 +58,28 @@ function SignIn() {
   }
 
   async function handleSignIn(method, credentials = {}) {
-    setError(false);
-    const signInMethod = getSignInMethod(method);
-    let response;
-    if (method === "EMAIL_PASSWORD") {
-      response = await signInMethod(credentials.email, credentials.password);
-    } else {
-      response = await signInMethod();
-    }
+    try {
+      setError(null);
+      const signInMethod = getSignInMethod(method);
+      let response;
+      if (method === "EMAIL_PASSWORD") {
+        response = await signInMethod(credentials.email, credentials.password);
+      } else {
+        response = await signInMethod();
+      }
 
-    if (response && response.user) {
-      router.push("/profile");
-    }
+      if (response && response.user) {
+        router.push("/profile");
+        return;
+      }
 
-    if (response && response.authenticationError) {
-      setError(response.authenticationError);
+      if (response && response.authenticationError) {
+        setError(response.authenticationError);
+      }
+
+      setError("An unexpected error occurred.");
+    } catch (e) {
+      setError("An unexpected error occurred.");
     }
   }
 
@@ -127,6 +134,7 @@ function SignIn() {
                   }}
                 />
                 <Button
+                  id="loginWithEmailAndPasswordButton"
                   variant="outlined"
                   disabled={formik.isSubmitting || !formik.dirty}
                   onClick={formik.handleSubmit}
