@@ -76,7 +76,6 @@ function CreatePost({ user }) {
       title: Yup.string()
         .max(100, "Title must be 100 characters or less.")
         .min(1, "Title cannot be blank")
-        .trim("Username cannot have leading nor trailing spaces")
         .strict()
         .required("Title is required."),
       shortDescription: Yup.string().max(
@@ -88,8 +87,8 @@ function CreatePost({ user }) {
         "Long description must be 5000 characters or less."
       ),
       videoSource: Yup.string().max(
-        50,
-        "Video source must be 50 characters or less."
+        200,
+        "Video URL must be 200 characters or less."
       ),
     }),
     onSubmit: handleSubmit,

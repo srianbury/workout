@@ -17,15 +17,20 @@ describe("template spec", () => {
     cy.url().should("include", `/create`);
 
     // Enter the create post fields and click submit
-    cy.get(`[id="title"]`).type("The 2nd Cypress Workout!");
+    const title = "The 2nd Cypress Workout!";
+    cy.get(`[id="title"]`).type(title);
     cy.get(`[id="shortDescription"]`).type("Creating this workout via cypress");
     cy.get(`[id="longDescription"]`).type(
       "1. Do\n2. Something\n3. Another workout more\n4. 500 pushups"
     );
     cy.get(`[id="videoSource"]`).type(
-      "https://www.youtube.com/watch?v=BQqzfHQkREo"
+      "https://www.youtube.com/watch?v=muxy-ByHmpA&list=PLbcFFX__Cz6MJgBc-0gk-IHg_x1nkOieI&index=5"
     );
     cy.contains("Submit").click();
+
+    // Should be redirected to the new post after it's created
+    cy.url().should("include", `/p/`);
+    cy.contains(title);
   });
 
   it("Signs up", () => {
