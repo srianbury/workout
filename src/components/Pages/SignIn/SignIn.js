@@ -33,13 +33,8 @@ function SignIn() {
       password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string()
-        .email("Please provide a valid email.")
-        .required("Email is required."),
-      password: Yup.string()
-        .max(100, "Password must be 100 characters or less.")
-        .min(8, "Password must be at least 8 characters.")
-        .required("Password is required."),
+      email: Yup.string().required("Email is required."),
+      password: Yup.string().required("Password is required."),
     }),
     onSubmit: handleEmailPasswordSignUp,
   });
@@ -77,9 +72,13 @@ function SignIn() {
         setError(response.authenticationError);
       }
 
-      setError("An unexpected error occurred.");
+      setError(
+        "An unexpected error occurred. Please double check your username and password and try again."
+      );
     } catch (e) {
-      setError("An unexpected error occurred.");
+      setError(
+        "An unexpected error occurred. Please double check your username and password and try again."
+      );
     }
   }
 
@@ -136,7 +135,9 @@ function SignIn() {
                 <Button
                   id="loginWithEmailAndPasswordButton"
                   variant="outlined"
-                  disabled={formik.isSubmitting || !formik.dirty}
+                  disabled={
+                    formik.isSubmitting || Object.keys(formik.errors).length > 0
+                  }
                   onClick={formik.handleSubmit}
                   sx={{ width: "100%", py: 1 }}
                 >
@@ -220,32 +221,9 @@ function AuthenticationError({ authenticationError }) {
     return null;
   }
 
-  if (authenticationError.type === "ACCOUNT_NOT_FOUND") {
-    return (
-      <Alert severity="error" sx={{ mt: 1 }}>
-        <Box
-          sx={{ display: "inline" }}
-        >{`No account found.  Please try another account or  `}</Box>
-        <Link href="/signup">
-          <Box
-            sx={{
-              display: "inline",
-              "&:hover": {
-                textDecoration: "underline",
-                cursor: "pointer",
-              },
-            }}
-          >
-            Sign Up.
-          </Box>
-        </Link>
-      </Alert>
-    );
-  }
-
   return (
     <Alert severity="error" sx={{ mt: 1 }}>
-      An unexpected error occurred.
+      {authenticationError}
     </Alert>
   );
 }
