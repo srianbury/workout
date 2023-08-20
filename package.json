@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:cypress": "cypress open"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
@@ -35,6 +36,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
+    "cypress": "^12.9.0",
     "eslint": "8.19.0",
     "eslint-config-next": "12.2.2"
   }
