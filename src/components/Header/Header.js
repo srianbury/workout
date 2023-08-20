@@ -31,6 +31,7 @@ function Header() {
         >
           <Box>
             <IconButton
+              id="menuButton"
               color="inherit"
               aria-label="open drawer"
               onClick={openDrawer}
