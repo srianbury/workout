@@ -2,13 +2,13 @@ import { useContext } from "react";
 import { useRouter } from "next/router";
 import { useQuery, useMutation, gql } from "@apollo/client";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { PostViewSkeleton } from "../Post/PostView";
 import { AuthenticatorContext } from "../../Authenticator";
 import {
   CreateOrUpdateView,
   CreateOrUpdatePostView,
 } from "../../CreateOrUpdatePost";
+import { postValidationSchema } from "../../../utils";
 
 function UpdatePost() {
   const { postId } = useRouter().query;
@@ -161,25 +161,7 @@ function Update({ user, post }) {
       longDescription: post.longDescription,
       videoSource: post.videoSource,
     },
-    validationSchema: Yup.object({
-      title: Yup.string()
-        .max(100, "Title must be 100 characters or less.")
-        .min(1, "Title cannot be blank")
-        .trim("Username cannot have leading nor trailing spaces")
-        .strict(),
-      shortDescription: Yup.string().max(
-        500,
-        "Short description must be 500 characters or less."
-      ),
-      longDescription: Yup.string().max(
-        5000,
-        "Long description must be 5000 characters or less."
-      ),
-      videoSource: Yup.string().max(
-        50,
-        "Video source must be 50 characters or less."
-      ),
-    }),
+    validationSchema: postValidationSchema,
     onSubmit: handleSubmit,
   });
 
