@@ -28,7 +28,11 @@ function PostActionItem({ postId }) {
 
   return (
     <Box>
-      <IconButton aria-label="edit" onClick={handleClick}>
+      <IconButton
+        id="edit-post-menu-icon-button"
+        aria-label="edit"
+        onClick={handleClick}
+      >
         <MoreVertIcon />
       </IconButton>
       <Menu
@@ -40,8 +44,12 @@ function PostActionItem({ postId }) {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleEdit}>Edit</MenuItem>
-        <MenuItem onClick={deletePost}>Delete</MenuItem>
+        <MenuItem id="edit-post-option-edit" onClick={handleEdit}>
+          Edit
+        </MenuItem>
+        <MenuItem id="edit-post-option-delete" onClick={deletePost}>
+          Delete
+        </MenuItem>
       </Menu>
     </Box>
   );

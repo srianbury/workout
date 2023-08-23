@@ -1,5 +1,5 @@
 describe("template spec", () => {
-  it("Signs in and create a post", () => {
+  it("Signs in, create a post, and edits it", () => {
     // Go to site then click Sign In
     cy.visit("http://localhost:3000/");
     cy.contains("Sign In").click();
@@ -31,6 +31,22 @@ describe("template spec", () => {
     // Should be redirected to the new post after it's created
     cy.url().should("include", `/p/`);
     cy.contains(title);
+
+    // Click on the 3 Vertical dot edit menu
+    cy.get(`[id="edit-post-menu-icon-button"]`).click();
+
+    // Select Edit from the menu
+    cy.get(`[id="edit-post-option-edit"]`).click();
+
+    // Should be redirected to the "edit post" page
+    cy.url().should("include", `/edit/`);
+    const newTitle = "I updated the title!";
+    cy.get(`[id="title"]`).clear().type(newTitle);
+    cy.contains("Update").click();
+
+    // Should be redirected back to the post after it's been updated and it should have the new title
+    cy.url().should("include", `/p/`);
+    cy.contains(newTitle);
   });
 
   it("Signs up", () => {
