@@ -18,6 +18,7 @@ function NavDrawer() {
         <DrawerLink href="/" text="Home" />
         <DrawerLink href="/about" text="About" />
         <DrawerLink href={`/${CONSTANTS.PATH_CREATE}`} text="Create Post" />
+        <DrawerLink href={`/favorites`} text="My Favorites" />
       </Box>
     </Drawer>
   );
