@@ -1,5 +1,13 @@
 # next-start
 
+## Local development with Docker
+
+- TODO: The docker setup has issues with cypress
+
+## Run Cypress Tests
+
+- With the service running (frontend and backend), run `yarn test:cypress`
+
 ## Getting Started
 
 1. clone
