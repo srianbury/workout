@@ -38,8 +38,16 @@ function App({ Component, pageProps }) {
         <NextHead>
           <title>Workout</title>
           <meta
+            key="description"
             name="description"
-            content="A community for finding and sharing exercises and workout plans."
+            content="A place to share and find workouts and
+            fitness related content."
+          />
+          <meta
+            key="og:description"
+            name="og:description"
+            content="A place to share and find workouts and
+            fitness related content."
           />
           <meta name="viewport" content="initial-scale=1, width=device-width" />
           <link rel="icon" href="/favicon.ico" />

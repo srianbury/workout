@@ -118,6 +118,7 @@ function CreateOrUpdatePostView({ formik, loading, error, onCancel, variant }) {
         ) : null}
         <Box>
           <Button
+            id={variant === "Update" ? "updateId" : "submitId"}
             onClick={formik.handleSubmit}
             disabled={formik.isSubmitting || loading}
             variant="outlined"

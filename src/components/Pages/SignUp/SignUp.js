@@ -158,6 +158,7 @@ function SignUp() {
                   </Alert>
                 ) : null}
                 <Button
+                  id="signUpButton"
                   variant="outlined"
                   onClick={formik.handleSubmit}
                   sx={{ width: "100%", py: 1 }}

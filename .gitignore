@@ -33,3 +33,5 @@ yarn-error.log*
 .vercel
 
 workout-platform-359703-firebase-adminsdk-68nai-15474d4113.json
+
+cypress.env.json
