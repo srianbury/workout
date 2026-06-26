@@ -18,14 +18,14 @@ function ProfileButton() {
           alt={user.initials}
           src={
             user.picture ||
-            `https://avatars.dicebear.com/api/initials/${user.initials}.svg`
+            `https://api.dicebear.com/10.x/initials/svg?seed=${user.initials}`
           }
         >
           <img
             alt={user.initials}
             src={
               user.picture ||
-              `https://avatars.dicebear.com/api/initials/${user.initials}.svg`
+              `https://api.dicebear.com/10.x/initials/svg?seed=${user.initials}`
             }
             referrerPolicy="no-referrer"
           />

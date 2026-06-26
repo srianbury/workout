@@ -35,15 +35,15 @@ function UsersPosts({ username }) {
             }
           }
           user {
+            id
             username
-            initials
-            userId
             picture
+            initials
           }
         }
       }
     `,
-    { variables: { username } }
+    { variables: { username } },
   );
 
   if (error) {

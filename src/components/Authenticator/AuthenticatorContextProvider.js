@@ -10,11 +10,11 @@ import {
 } from "../Firebase";
 
 function AuthenticatorContextProvider({ children }) {
-  const [authenticateToken, { data, /*loading, error,*/ reset }] =
-    useMutation(gql`
+  const [authenticateToken, { data, /*loading, error,*/ reset }] = useMutation(
+    gql`
       mutation ($token: String!, $method: String!) {
         authenticate(token: $token, method: $method) {
-          userId
+          id
           username
           email
           initials
@@ -22,7 +22,8 @@ function AuthenticatorContextProvider({ children }) {
           token
         }
       }
-    `);
+    `,
+  );
 
   function logout() {
     handleFirebaseSignOut();
@@ -37,7 +38,7 @@ function AuthenticatorContextProvider({ children }) {
         user = await signInSignUpWithEmailPassword(
           method,
           meta.email,
-          meta.password
+          meta.password,
         );
         break;
       case "GOOGLE":

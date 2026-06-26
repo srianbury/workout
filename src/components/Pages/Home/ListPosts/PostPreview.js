@@ -5,11 +5,11 @@ import { PostActionItem } from "../../../PostActionItem";
 
 function PostPreview({ user, post, variant }) {
   function userOwnsPost() {
-    if (!user || !user.userId) {
+    if (!user || !user.id) {
       return false;
     }
 
-    return user?.userId === post?.user?.userId;
+    return user?.id === post?.user?.id;
   }
 
   return (
@@ -170,14 +170,14 @@ function Image({ post }) {
       alt={post.user.initials}
       src={
         post.user.picture ||
-        `https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`
+        `https://api.dicebear.com/10.x/initials/svg?seed=${post.user.initials}`
       }
     >
       <img
         alt={post.user.initials}
         src={
           post.user.picture ||
-          `https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`
+          `https://api.dicebear.com/10.x/initials/svg?seed=${post.user.initials}`
         }
         referrerPolicy="no-referrer"
       />

@@ -24,13 +24,11 @@ import "react-lite-youtube-embed/dist/LiteYouTubeEmbed.css";
 function PostView({ post, refetch }) {
   const [favoriting, setFavoriting] = useState(false);
   const { user } = useContext(AuthenticatorContext);
-  const [favoritePost] = useMutation(
-    gql`
-      mutation ($postId: ID!, $operation: String!) {
-        favoritePost(postId: $postId, operation: $operation)
-      }
-    `
-  );
+  const [favoritePost] = useMutation(gql`
+    mutation ($postId: ID!, $operation: String!) {
+      favoritePost(postId: $postId, operation: $operation)
+    }
+  `);
 
   async function onFavoriteClick() {
     try {
@@ -155,14 +153,14 @@ function PostView({ post, refetch }) {
                       alt={post.user.initials}
                       src={
                         post.user.picture ||
-                        `https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`
+                        `https://api.dicebear.com/10.x/initials/svg?seed=${post.user.initials}`
                       }
                     >
                       <img
                         alt={post.user.initials}
                         src={
                           post.user.picture ||
-                          `https://avatars.dicebear.com/api/initials/${post.user.initials}.svg`
+                          `https://api.dicebear.com/10.x/initials/svg?seed=${post.user.initials}`
                         }
                         referrerPolicy="no-referrer"
                       />
@@ -186,7 +184,7 @@ function PostView({ post, refetch }) {
                 </Box>
               </Grid>
             </div>
-            <Options postId={post.postId} postOwnerId={post.user.userId} />
+            <Options postId={post.postId} postOwnerId={post.user.id} />
           </Grid>
         </Card>
         <Box sx={{ whiteSpace: "pre-wrap" }}>{post.longDescription}</Box>
@@ -263,7 +261,7 @@ function Options({ postId, postOwnerId }) {
     router.push(`/u/${user.username}`);
   }
 
-  return user && postOwnerId && user.userId === postOwnerId ? (
+  return user && postOwnerId && user.id === postOwnerId ? (
     <DeletePostDialogContextProvider afterDeleteCb={afterDelete}>
       <PostActionItem postId={postId} />
     </DeletePostDialogContextProvider>
