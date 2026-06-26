@@ -45,15 +45,14 @@ function UpdatePostContainter({ postId }) {
             }
           }
           user {
-            userId
+            id
             username
-            initials
             picture
           }
         }
       }
     `,
-    { variables: { postId } }
+    { variables: { postId } },
   );
 
   if (error) {
@@ -96,11 +95,7 @@ function UpdatePage({ post }) {
     );
   }
 
-  if (
-    !user?.userId ||
-    !post?.user?.userId ||
-    user.userId !== post.user.userId
-  ) {
+  if (!user?.id || !post?.user?.id || user.id !== post.user.id) {
     return (
       <div>
         <main>
@@ -147,8 +142,9 @@ function Update({ user, post }) {
           }
         }
         user {
-          userId
+          id
           username
+          picture
         }
       }
     }
@@ -167,7 +163,7 @@ function Update({ user, post }) {
 
   async function handleSubmit(
     { title, shortDescription, longDescription, videoSource },
-    { setSubmitting }
+    { setSubmitting },
   ) {
     try {
       let variables = {

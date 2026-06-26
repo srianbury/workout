@@ -73,11 +73,11 @@ function SignIn() {
       }
 
       setError(
-        "An unexpected error occurred. Please double check your username and password and try again."
+        "An unexpected error occurred. Please double check your username and password and try again.",
       );
     } catch (e) {
       setError(
-        "An unexpected error occurred. Please double check your username and password and try again."
+        "An unexpected error occurred. Please double check your username and password and try again.",
       );
     }
   }

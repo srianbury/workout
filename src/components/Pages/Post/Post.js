@@ -39,7 +39,7 @@ function PostContainter({ postId }) {
             }
           }
           user {
-            userId
+            id
             username
             initials
             picture
@@ -56,7 +56,7 @@ function PostContainter({ postId }) {
           authorization: user?.token,
         },
       },
-    }
+    },
   );
 
   if (error) {

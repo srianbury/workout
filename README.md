@@ -4,16 +4,17 @@
 
 - TODO: The docker setup has issues with cypress
 
-## Run Cypress Tests
-
-- With the service running (frontend and backend), run `yarn test:cypress`
-
 ## Getting Started
 
 1. clone
-2. `yarn` or `npm install` to install dependencies
-3. `yarn dev` or `npm run dev` to start local server
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. `nvm use 16`
+3. `yarn` or `npm install` to install dependencies
+4. `yarn dev` or `npm run dev` to start local server
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Run Cypress Tests
+
+- With the service running (frontend and backend), run `yarn test:cypress`
 
 ## From Nextjs
 

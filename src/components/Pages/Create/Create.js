@@ -48,7 +48,7 @@ function CreatePost({ user }) {
             }
           }
           user {
-            userId
+            id
             username
           }
         }
@@ -62,7 +62,7 @@ function CreatePost({ user }) {
           },
         },
       },
-    }
+    },
   );
 
   const formik = useFormik({
