@@ -115,7 +115,7 @@ function PostPreviewThumbnail({ post }) {
   if (post?.media?.photo) {
     src = post.media.photo;
   } else if (post?.media?.video?.source === "YOUTUBE") {
-    src = `https://img.youtube.com/vi/${post.media.video.id}/sddefault.jpg`;
+    src = `https://img.youtube.com/vi/${post.media.video.id}/hqdefault.jpg`;
   }
 
   if (!src) {
