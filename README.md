@@ -7,7 +7,7 @@
 ## Getting Started
 
 1. clone
-2. `nvm use 16`
+2. `nvm use 24`
 3. `yarn` or `npm install` to install dependencies
 4. `yarn dev` or `npm run dev` to start local server
 5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
