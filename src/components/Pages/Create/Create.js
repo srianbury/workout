@@ -21,49 +21,36 @@ function Create() {
 
 function CreatePost({ user }) {
   const router = useRouter();
-  const [createPost, { loading, error }] = useMutation(
-    gql`
-      mutation (
-        $token: String!
-        $title: String!
-        $shortDescription: String!
-        $longDescription: String!
-        $videoSource: String
+  const [createPost, { loading, error }] = useMutation(gql`
+    mutation (
+      $title: String!
+      $shortDescription: String!
+      $longDescription: String!
+      $videoSource: String
+    ) {
+      createPost(
+        title: $title
+        shortDescription: $shortDescription
+        longDescription: $longDescription
+        videoSource: $videoSource
       ) {
-        createPost(
-          token: $token
-          title: $title
-          shortDescription: $shortDescription
-          longDescription: $longDescription
-          videoSource: $videoSource
-        ) {
-          postId
-          title
-          shortDescription
-          longDescription
-          media {
-            video {
-              source
-              id
-            }
-          }
-          user {
+        postId
+        title
+        shortDescription
+        longDescription
+        media {
+          video {
+            source
             id
-            username
           }
         }
+        user {
+          id
+          username
+        }
       }
-    `,
-    {
-      options: {
-        context: {
-          headers: {
-            authorization: user?.token ? user.token : null,
-          },
-        },
-      },
-    },
-  );
+    }
+  `);
 
   const formik = useFormik({
     initialValues: {
@@ -80,11 +67,15 @@ function CreatePost({ user }) {
     try {
       const response = await createPost({
         variables: {
-          token: user.token,
           title: values.title,
           shortDescription: values.shortDescription,
           longDescription: values.longDescription,
           videoSource: values.videoSource,
+        },
+        context: {
+          headers: {
+            authorization: user?.token,
+          },
         },
       });
       if (response?.data?.createPost?.postId) {
