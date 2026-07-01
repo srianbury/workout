@@ -15,11 +15,11 @@ import { AuthenticatorContext } from "../Authenticator";
 function DeletePostDialog({ afterDeleteCb }) {
   const { user } = useContext(AuthenticatorContext);
   const { open, postId, message, closeDeleteModal, handleError } = useContext(
-    DeletePostDialogContext
+    DeletePostDialogContext,
   );
   const [deletePostMutation, { loading, error }] = useMutation(gql`
-    mutation ($token: String!, $postId: ID!) {
-      deletePost(token: $token, postId: $postId)
+    mutation ($postId: ID!) {
+      deletePost(postId: $postId)
     }
   `);
 
@@ -28,6 +28,11 @@ function DeletePostDialog({ afterDeleteCb }) {
       variables: {
         token: user.token,
         postId,
+      },
+      context: {
+        headers: {
+          authorization: user?.token,
+        },
       },
     });
     if (response?.data?.deletePost === true) {
