@@ -116,7 +116,6 @@ function Update({ user, post }) {
   const router = useRouter();
   const [updatePost, { loading, error }] = useMutation(gql`
     mutation (
-      $token: String!
       $postId: ID!
       $title: String
       $shortDescription: String
@@ -124,7 +123,6 @@ function Update({ user, post }) {
       $videoSource: String
     ) {
       updatePost(
-        token: $token
         postId: $postId
         title: $title
         shortDescription: $shortDescription
@@ -167,7 +165,6 @@ function Update({ user, post }) {
   ) {
     try {
       let variables = {
-        token: user.token,
         postId: post.postId,
       };
       if (title) {
@@ -184,6 +181,11 @@ function Update({ user, post }) {
       }
       const response = await updatePost({
         variables,
+        context: {
+          headers: {
+            authorization: user?.token,
+          },
+        },
       });
       if (response?.data?.updatePost?.postId) {
         router.push(`/p/${response.data.updatePost.postId}`);
