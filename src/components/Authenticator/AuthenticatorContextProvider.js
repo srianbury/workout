@@ -12,8 +12,8 @@ import {
 function AuthenticatorContextProvider({ children }) {
   const [authenticateToken, { data, /*loading, error,*/ reset }] = useMutation(
     gql`
-      mutation ($token: String!, $method: String!) {
-        authenticate(token: $token, method: $method) {
+      mutation ($method: String!) {
+        authenticate(method: $method) {
           id
           username
           email
@@ -61,7 +61,12 @@ function AuthenticatorContextProvider({ children }) {
       }
 
       const response = await authenticateToken({
-        variables: { token: user.accessToken, method }, // method: SIGN_UP, SIGN_IN
+        variables: { method }, // method: SIGN_UP, SIGN_IN
+        context: {
+          headers: {
+            authorization: user?.accessToken,
+          },
+        },
       });
 
       if (response?.errors) {
