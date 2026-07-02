@@ -67,8 +67,8 @@ function UserProfile({ user, logout, handleAuthenticationResponse }) {
 
 function UpdateUserName({ user, handleAuthenticationResponse }) {
   const [updateUserInfo, { data, loading, error, reset }] = useMutation(gql`
-    mutation ($token: String!, $userInfo: UserInfo!) {
-      updateUserInfo(token: $token, userInfo: $userInfo) {
+    mutation ($userInfo: UserInfo!) {
+      updateUserInfo(userInfo: $userInfo) {
         success
         message
         user {
@@ -99,8 +99,12 @@ function UpdateUserName({ user, handleAuthenticationResponse }) {
     try {
       const response = await updateUserInfo({
         variables: {
-          token: user.token,
           userInfo: { username: values.username },
+        },
+        context: {
+          headers: {
+            authorization: user.token,
+          },
         },
       });
       if (
@@ -111,7 +115,7 @@ function UpdateUserName({ user, handleAuthenticationResponse }) {
       ) {
         handleAuthenticationResponse(
           response.data.updateUserInfo.user,
-          "SIGN_IN"
+          "SIGN_IN",
         );
       }
       setSubmitting(false);
