@@ -15,7 +15,7 @@ import { ErrorBoundary } from "../ErrorBoundary";
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   integrations: [new BrowserTracing()],
-  tracesSampleRate: 1.0,
+  tracesSampleRate: 1.0, // 100%
   environment: process.env.NEXT_PUBLIC_SENTRY_ENVIRONMENT,
 });
 
