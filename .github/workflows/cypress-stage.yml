@@ -6,22 +6,8 @@ on:
       - vercel.deployment.ready
 
 jobs:
-  dump-event:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Dump event payload
-        run: |
-          echo "GITHUB_EVENT_PATH=$GITHUB_EVENT_PATH"
-          echo '--- event payload ---'
-          cat "$GITHUB_EVENT_PATH"
-
-      - name: Debug Vercel payload
-        run: |
-          echo '${{ toJson(github.event) }}'
-
   cypress:
-    if: github.event.client_payload.target == 'stage'
+    if: github.event.client_payload.git.ref == 'stage'
 
     runs-on: ubuntu-latest
 
