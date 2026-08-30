@@ -29,4 +29,4 @@ jobs:
       - name: Run Cypress
         run: yarn test:cypress
         env:
-          CYPRESS_BASE_URL: https://${{ github.event.client_payload.url }}
+          CYPRESS_BASE_URL: ${{ github.event.client_payload.url }}
