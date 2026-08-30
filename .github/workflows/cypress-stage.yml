@@ -1,0 +1,32 @@
+name: Cypress Stage Tests
+
+on:
+  repository_dispatch:
+    types:
+      - vercel.deployment.ready
+
+jobs:
+  cypress:
+    if: github.event.client_payload.target == 'stage'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout stage
+        uses: actions/checkout@v4
+        with:
+          ref: stage
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run Cypress
+        run: yarn test:cypress
+        env:
+          CYPRESS_BASE_URL: ${{ github.event.client_payload.url }}
