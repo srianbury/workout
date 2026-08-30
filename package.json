@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test:cypress": "cypress open"
+    "test:cypress": "cypress run --e2e --browser chrome"
   },
   "dependencies": {
     "@apollo/client": "^3.6.9",
@@ -36,7 +36,7 @@
     "yup": "^0.32.11"
   },
   "devDependencies": {
-    "cypress": "^12.9.0",
+    "cypress": "^15.21.1",
     "eslint": "8.19.0",
     "eslint-config-next": "12.3.4"
   }
