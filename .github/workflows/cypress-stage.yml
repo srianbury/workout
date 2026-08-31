@@ -30,3 +30,8 @@ jobs:
         run: yarn test:cypress
         env:
           CYPRESS_BASE_URL: ${{ github.event.client_payload.url }}
+          CYPRESS_TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+          CYPRESS_TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+          CYPRESS_TEST_USER_EMAIL_START: ${{ secrets.TEST_USER_EMAIL_START }}
+          CYPRESS_TEST_USER_EMAIL_END: ${{ secrets.TEST_USER_EMAIL_END }}
+          CYPRESS_TEST_NOT_A_USER: ${{ secrets.TEST_NOT_A_USER }}
