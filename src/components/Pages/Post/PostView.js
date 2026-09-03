@@ -101,6 +101,7 @@ function PostView({ post, refetch }) {
                 <CircularProgress size={25} />
               ) : post.favorited ? (
                 <FavoriteIcon
+                  data-cy="favorited-icon"
                   onClick={onFavoriteClick}
                   sx={{
                     "&:hover": {
@@ -111,6 +112,7 @@ function PostView({ post, refetch }) {
                 />
               ) : (
                 <FavoriteBorderIcon
+                  data-cy="not-favorited-icon"
                   onClick={onFavoriteClick}
                   sx={{
                     "&:hover": {
@@ -124,8 +126,8 @@ function PostView({ post, refetch }) {
           </Grid>
         </Grid>
         <Typography component="div" sx={{ mb: 2 }}>
-          {`${post.favorites} favorite${post.favorites === 1 ? "" : "s"}`} •{" "}
-          {new Date(post.createdAt).toLocaleDateString()}
+          <span data-cy="num-favorites">{`${post.favorites} favorite${post.favorites === 1 ? "" : "s"}`}</span>{" "}
+          • {new Date(post.createdAt).toLocaleDateString()}
         </Typography>
         <Card variant="outlined" sx={{ mb: 1 }}>
           <Grid
