@@ -3,7 +3,7 @@ describe("template spec", () => {
     expect(Cypress.config("baseUrl")).to.not.equal(null);
   });
 
-  it("Signs in, create a post, and edits it", () => {
+  it("Signs in, Create, Edit, Like", () => {
     // Go to site then click Sign In
     cy.visit("/");
     cy.contains("Sign In").click();
@@ -51,6 +51,37 @@ describe("template spec", () => {
     // Should be redirected back to the post after it's been updated and it should have the new title
     cy.url().should("include", `/p/`);
     cy.contains(newTitle);
+
+    // like post
+    let numLikes;
+    cy.get('[data-cy="num-favorites"]')
+      .invoke("text")
+      .then((text) => {
+        numLikes = parseInt(text.trim().split(" ")[0]);
+      });
+    cy.get('[data-cy="not-favorited-icon"]').click();
+    cy.get('[data-cy="favorited-icon"]').should("be.visible");
+    cy.get("body").find('[data-cy="not-favorited-icon"]').should("not.exist");
+    cy.get('[data-cy="num-favorites"]')
+      .invoke("text")
+      .then((text) => {
+        const newNumLikes = parseInt(text.trim().split(" ")[0]);
+        expect(newNumLikes).to.equal(numLikes + 1);
+        numLikes = newNumLikes;
+      });
+
+    // unlike post
+    cy.get('[data-cy="favorited-icon"]').click();
+    cy.get('[data-cy="not-favorited-icon"]').should("be.visible");
+    cy.get("body").find('[data-cy="favorited-icon"]').should("not.exist");
+    cy.get('[data-cy="num-favorites"]')
+      .invoke("text")
+      .then((text) => {
+        expect(parseInt(text.trim().split(" ")[0])).to.equal(numLikes - 1);
+      });
+
+    // like it once more to leave it liked
+    cy.get('[data-cy="not-favorited-icon"]').click();
   });
 
   it("Signs up", () => {
