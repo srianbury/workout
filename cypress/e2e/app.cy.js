@@ -112,4 +112,20 @@ describe("template spec", () => {
     cy.get('[id="loginWithEmailAndPasswordButton"]').click();
     cy.contains("An unexpected error occurred.");
   });
+
+  it("stays logged in on page refresh", () => {
+    cy.visit("/signin");
+
+    // login
+    cy.get('[id="email"]').type(Cypress.env("TEST_USER_EMAIL"));
+    cy.get('[id="password"]').type(Cypress.env("TEST_USER_PASSWORD"));
+    cy.get('[id="loginWithEmailAndPasswordButton"]').click();
+
+    // successful login
+    cy.contains("Hi JohnnyTest123, you are logged in.");
+
+    // refresh page && user should still be logged in
+    cy.reload();
+    cy.contains("Hi JohnnyTest123, you are logged in.");
+  });
 });

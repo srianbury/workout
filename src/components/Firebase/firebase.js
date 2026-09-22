@@ -87,7 +87,7 @@ function useAuthState(options) {
 }
 
 function handleFirebaseSignOut() {
-  signOut(auth);
+  return signOut(auth);
 }
 
 export {

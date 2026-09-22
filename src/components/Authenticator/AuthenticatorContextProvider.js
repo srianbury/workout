@@ -10,7 +10,8 @@ import {
 } from "../Firebase";
 
 function AuthenticatorContextProvider({ children }) {
-  const [authenticateToken, { data, /*loading, error,*/ reset }] = useMutation(
+  const [firebaseAuthUser, firebaseLoading] = useAuthState({});
+  const [authenticateToken, { data, loading, reset /* error */ }] = useMutation(
     gql`
       mutation ($method: String!) {
         authenticate(method: $method) {
@@ -25,13 +26,11 @@ function AuthenticatorContextProvider({ children }) {
     `,
   );
 
-  function logout() {
-    handleFirebaseSignOut();
-    reset();
+  async function logout() {
+    return handleFirebaseSignOut();
   }
 
   async function handleSignInSignUp(method, provider, meta = {}) {
-    // TODO add email/password option
     let user;
     switch (provider) {
       case "EMAIL_PASSWORD":
@@ -103,7 +102,55 @@ function AuthenticatorContextProvider({ children }) {
       password,
     });
 
-  console.log("AUTHENTICATOR_CONTEXT", data);
+  useEffect(() => {
+    console.log("effect", { loading, firebaseAuthUser, data });
+    let cancelled = false;
+    const token = firebaseAuthUser?.accessToken;
+    if (!token) {
+      if (data) reset();
+      return;
+    }
+    if (data) return; // already authenticated on app side
+    (async () => {
+      try {
+        if (loading) {
+          return;
+        }
+        await authenticateToken({
+          variables: { method: "SIGN_IN" },
+          context: { headers: { authorization: token } },
+        });
+      } catch (err) {
+        console.log(err);
+        if (!cancelled) {
+          // handle/log error (optional retry)
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [
+    firebaseAuthUser?.accessToken,
+    firebaseAuthUser?.uid,
+    data?.authenticate,
+    loading,
+    authenticateToken,
+    reset,
+  ]);
+
+  // wait for firebase to load (and user, if they're logged in)
+  function show() {
+    function loggedInAndWaitingForProfiledata() {
+      return !firebaseLoading && firebaseAuthUser && !data;
+    }
+
+    if (firebaseLoading || loggedInAndWaitingForProfiledata()) {
+      return false;
+    }
+
+    return true;
+  }
 
   return (
     <AuthenticatorContext.Provider
@@ -121,7 +168,7 @@ function AuthenticatorContextProvider({ children }) {
         handleAuthenticationResponse,
       }}
     >
-      {children}
+      {show() && children}
     </AuthenticatorContext.Provider>
   );
 }
