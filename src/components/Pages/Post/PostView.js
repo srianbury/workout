@@ -8,6 +8,11 @@ import {
   Button,
   Card,
   CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
   Grid,
   Typography,
   Skeleton,
@@ -186,7 +191,7 @@ function PostView({ post, refetch }) {
                 </Box>
               </Grid>
             </div>
-            <Options postId={post.postId} postOwnerId={post.user.id} />
+            <Options post={post} refetch={refetch} />
           </Grid>
         </Card>
         <Box sx={{ whiteSpace: "pre-wrap" }}>{post.longDescription}</Box>
@@ -255,7 +260,8 @@ function PostViewSkeleton() {
   );
 }
 
-function Options({ postId, postOwnerId }) {
+function Options({ post, refetch }) {
+  const postOwnerId = post?.user?.id;
   const { user } = useContext(AuthenticatorContext);
   const router = useRouter();
 
@@ -263,17 +269,108 @@ function Options({ postId, postOwnerId }) {
     router.push(`/u/${user.username}`);
   }
 
-  return user && postOwnerId && user.id === postOwnerId ? (
-    <DeletePostDialogContextProvider afterDeleteCb={afterDelete}>
-      <PostActionItem postId={postId} />
-    </DeletePostDialogContextProvider>
+  if (user && postOwnerId && user.id === postOwnerId) {
+    return (
+      <DeletePostDialogContextProvider afterDeleteCb={afterDelete}>
+        <PostActionItem postId={post.postId} />
+      </DeletePostDialogContextProvider>
+    );
+  }
+
+  return post.user.following ? (
+    <UnfollowButton user={user} post={post} refetch={refetch} />
   ) : (
-    <FollowButton />
+    <FollowButton user={user} post={post} refetch={refetch} />
   );
 }
 
-function FollowButton() {
-  return <Button variant="outlined">Follow</Button>;
+function FollowButton({ user, post, refetch }) {
+  const [follow, { loading }] = useMutation(gql`
+    mutation ($username: String!) {
+      followUser(username: $username)
+    }
+  `);
+
+  async function handleFollowClick() {
+    const response = await follow({
+      variables: { username: post.user.username },
+      context: {
+        headers: {
+          authorization: user?.token,
+        },
+      },
+    });
+    console.log("follow", { response });
+    if (response?.data?.followUser) {
+      await refetch({ postId: post.postId });
+    }
+  }
+
+  return (
+    <Button variant="contained" onClick={handleFollowClick} disabled={loading}>
+      {loading ? <CircularProgress sx={{ mr: 1 }} size={20} /> : "Follow"}
+    </Button>
+  );
+}
+
+function UnfollowButton({ user, post, refetch }) {
+  const [open, setOpen] = useState(false);
+  const [unfollow, { loading }] = useMutation(gql`
+    mutation ($username: String!) {
+      unfollowUser(username: $username)
+    }
+  `);
+
+  async function handleUnfollowClick() {
+    const response = await unfollow({
+      variables: { username: post.user.username },
+      context: {
+        headers: {
+          authorization: user?.token,
+        },
+      },
+    });
+    console.log("unfollow", { response });
+    if (response?.data?.unfollowUser) {
+      await refetch({ postId: post.postId });
+    }
+  }
+
+  function openDialog() {
+    setOpen(true);
+  }
+
+  function closeDialog() {
+    setOpen(false);
+  }
+
+  return (
+    <>
+      <Dialog open={open} onClose={closeDialog}>
+        <DialogTitle id="alert-dialog-title">Unfollow</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Unfollow {post.user.username}?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeDialog} variant="contained" color="neutral">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleUnfollowClick}
+            variant="contained"
+            color="error"
+          >
+            Unfollow
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Button variant="outlined" onClick={openDialog} disabled={loading}>
+        Following
+      </Button>
+    </>
+  );
 }
 
 export { PostView, PostViewSkeleton };
