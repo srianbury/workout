@@ -285,13 +285,28 @@ function Options({ post, refetch }) {
 }
 
 function FollowButton({ user, post, refetch }) {
+  const [open, setOpen] = useState(false);
+
   const [follow, { loading }] = useMutation(gql`
     mutation ($username: String!) {
       followUser(username: $username)
     }
   `);
 
+  function openDialog() {
+    setOpen(true);
+  }
+
+  function closeDialog() {
+    setOpen(false);
+  }
+
   async function handleFollowClick() {
+    if (!user) {
+      openDialog();
+      return;
+    }
+
     const response = await follow({
       variables: { username: post.user.username },
       context: {
@@ -300,6 +315,7 @@ function FollowButton({ user, post, refetch }) {
         },
       },
     });
+
     console.log("follow", { response });
     if (response?.data?.followUser) {
       await refetch({ postId: post.postId });
@@ -307,9 +323,30 @@ function FollowButton({ user, post, refetch }) {
   }
 
   return (
-    <Button variant="contained" onClick={handleFollowClick} disabled={loading}>
-      {loading ? <CircularProgress sx={{ mr: 1 }} size={20} /> : "Follow"}
-    </Button>
+    <>
+      <Dialog open={open} onClose={closeDialog}>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Sign In to follow {post.user.username}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeDialog} variant="contained" color="neutral">
+            Cancel
+          </Button>
+          <Link href="/signin" passHref>
+            <Button variant="contained">Sign In</Button>
+          </Link>
+        </DialogActions>
+      </Dialog>
+      <Button
+        variant="contained"
+        onClick={handleFollowClick}
+        disabled={loading}
+      >
+        {loading ? <CircularProgress sx={{ mr: 1 }} size={20} /> : "Follow"}
+      </Button>
+    </>
   );
 }
 
